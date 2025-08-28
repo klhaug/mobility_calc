@@ -6,6 +6,7 @@ function App() {
 
   const [phoneAmount, setPhoneAmount] = useState(150)
   const [age, setAge] = useState(24)
+  const [savings, setSavings] = useState(365)
 
   return (
     <>
@@ -81,7 +82,43 @@ function App() {
                   32 mnd
                   </label>
           </fieldset>
-           {/* <span>{age}</span> */}
+        </section>
+        <section className="py-23">
+          <div>
+            <h2>Dine besparelser</h2>
+            <div className="flex">
+              <input
+                    className="hidden peer/savingsYearly"
+                    type="radio"
+                    id='savingsYearly'
+                    name="savings"
+                    value={365}
+                    onChange={(e) => setSavings(e.target.value)}  />
+                     <label
+                  className="peer-checked/savingsYearly:bg-green-800  peer-checked/savingsYearly:text-white flex  w-fit items-center justify-center bg-green-100 hover:cursor-pointer"
+                  htmlFor="savingsYearly">
+                    Per år
+                  </label>
+              <input
+                    className="hidden peer/savingsLifetime"
+                    type="radio"
+                    id='savingsLifetime'
+                    name="savings"
+                    value={365}
+                    onChange={(e) => setSavings(e.target.value)}  />
+                     <label
+                  className="peer-checked/savingsLifetime:bg-green-800 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
+                  htmlFor="savingsLifetime">
+                    Levetid
+                  </label>
+            </div>
+            <div>
+              <p>NOK</p>
+              <p>{Math.floor(((phoneAmount * 8500) - (phoneAmount * 4500))/12)}</p>
+              <p>Kg CO2e</p>
+
+            </div>
+          </div>
         </section>
       </main>
     </>
