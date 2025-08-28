@@ -4,7 +4,8 @@ This is a copy of Mobilitys climate-calculator, where you can calculate your fir
 
 ## Stack
 
-React
-Tailwind CSS
+  React
+  Tailwind CSS
+  Typescript
 
-# mobility_calc
+### mobility_calc
