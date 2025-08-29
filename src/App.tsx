@@ -8,10 +8,12 @@ function App() {
 
   const [phoneAmount, setPhoneAmount] = useState(150);
   const [age, setAge] = useState(24);
+  const [extraAge, setExtraAge] = useState(6)
   const [savings, setSavings] = useState(365);
   const [calcIsOpen, setCalcIsOpen] = useState(false);
   const [adjIsOpen, setAdjIsOpen] = useState(false);
-  const [phonePrice, setPhonePrice] = useState(8756);
+  const [phonePrice, setPhonePrice] = useState(8764);
+  const [refurbishedPhones, setRefurbishedPhones] = useState(1.1);
   const [phonePriceRefurbished, setPhonePriceRefurbished] = useState(4370)
   const [avgEmissions, setAvgEmissions] = useState(64)
   const [avgEmissionsRefurbished, setAvgEmissionsRefurbished] = useState(20)
@@ -21,7 +23,9 @@ function App() {
   }
   const handleAdjClick = () => {
     setAdjIsOpen(!adjIsOpen)
+  
   }
+  console.log(typeof extraAge, typeof age, parseFloat(extraAge)+parseFloat(age))
 
   return (
     <>
@@ -42,6 +46,8 @@ function App() {
             labelFontSize="12px"
             knobColor="#06620A"
             width={400}
+            initialValue={150}
+            dataIndex={phoneAmount - 1}
             knobSize={48}
             min={1}
             max={1000}
@@ -64,11 +70,12 @@ function App() {
                     type="radio"
                     id='savingsYearly'
                     name="savings"
-                    value={365}
+                    defaultChecked={true}
+                    value={12}
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
-                  className="peer-checked/savingsYearly:bg-green-800 px-2 peer-checked/savingsYearly:text-white flex  w-fit items-center justify-center bg-green-100 hover:cursor-pointer"
-                  htmlFor="savingsYearly">
+                    className="peer-checked/savingsYearly:bg-green-800 px-2 peer-checked/savingsYearly:text-white flex  w-fit items-center justify-center bg-green-100 hover:cursor-pointer"
+                    htmlFor="savingsYearly">
                     Per år
                   </label>
               <input
@@ -76,7 +83,7 @@ function App() {
                     type="radio"
                     id='savingsLifetime'
                     name="savings"
-                    value={365}
+                    value={age + extraAge}
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
                   className="peer-checked/savingsLifetime:bg-green-800 px-2 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
@@ -87,7 +94,9 @@ function App() {
             <div className="flex flex-col gap-2">
               <div className="flex justify-between">
                 <p>NOK</p>
-                <p className="text-xl font-semibold">{Math.floor(((phoneAmount * 8500) - (phoneAmount * 4500))/12)} kr</p>
+                <p className="text-xl font-semibold">
+                  {((phoneAmount * phonePrice) / 12 * (savings))}
+                  </p>
               </div>
               <div className="flex justify-between">
                 <p>Kg CO2e</p>
@@ -103,12 +112,42 @@ function App() {
               </div>
             </div>
           </div>
-          <div onClick={handleCalcClick} className="flex active:bg-gray-100 justify-between items-start border-gray-500 hover:cursor-pointer px-6 py-8 border">
+          <div onClick={handleCalcClick} className="flex active:bg-gray-100 flex-col justify-between items-start border-gray-500 hover:cursor-pointer px-6 py-8 border">
             <div className="flex justify-between items-center w-full">
               <p>Se detaljert utregning</p>
                         <svg className={`${calcIsOpen ? "rotate-90" : null } transition-all`} xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#06620A"><path d="m288-96-68-68 316-316-316-316 68-68 384 384L288-96Z"/></svg>
             </div>
-          <div className={`${calcIsOpen ? "h-21" : "h-0"} overflow-hidden transition-all`}>
+          <div className={`${calcIsOpen ? "h-fit" : "h-0"} w-full overflow-hidden flex flex-col transition-all`}>
+            <table>
+              <tbody>
+                <tr>
+                  <th className="text-start">Penger (NOK)</th>
+                  <th  className="text-end" >Pr enhet</th>
+                  <th className="text-end">Totalt:</th>
+                            </tr>
+                            <tr>
+                <td className="text-start">Dagens kostnader per år</td>
+                  <td  className="text-end" >{phonePrice}</td>
+                  <td  className="text-end" >{phonePrice * phoneAmount}</td>
+                            </tr>
+                            <tr>
+                <td className="text-start">Dagens kostnad per mnd</td>
+                  <td  className="text-end" >{Math.floor(parseFloat(phonePrice) / parseFloat(age))}</td>
+                  <td  className="text-end" >{Math.floor(phonePrice * phoneAmount / age)}</td>
+                            </tr>
+                            <tr>
+                <td className="text-start">Justert kostnad per mnd</td>
+                  <td  className="text-end" >{Math.floor(phonePrice / (parseFloat(age) + parseFloat(extraAge)))}</td>
+                  <td  className="text-end" >{Math.floor((phonePrice * phoneAmount) / (age + extraAge))}</td>
+                            </tr>
+                            <tr>
+                <td className="text-start">Dagens kostnader per år</td>
+                  <td  className="text-end" >{phonePrice}</td>
+                  <td  className="text-end" >{phonePrice * phoneAmount}</td>
+                            </tr>
+              </tbody>
+
+            </table>
             </div>
           </div>
         </section>
@@ -133,6 +172,7 @@ function App() {
                   type="radio"
                   id='24'
                   name="age"
+                  defaultChecked={true}
                   value={24}
                   onChange={(e) => setAge(e.target.value)}
                   />
@@ -142,16 +182,16 @@ function App() {
                   24 mnd
                 </label>
                 <input
-                  className="hidden peer/32"
+                  className="hidden peer/30"
                   type="radio"
-                  id='32'
+                  id='30'
                   name="age"
-                  value={32}
+                  value={30}
                   onChange={(e) => setAge(e.target.value)}
                   />
                    <label
-                    htmlFor="32"
-                    className="peer-checked/32:bg-green-800 peer-checked/32:text-white h-[56px] flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer" >
+                    htmlFor="30"
+                    className="peer-checked/30:bg-green-800 peer-checked/30:text-white h-[56px] flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer" >
                   32 mnd
                   </label>
           </fieldset>
@@ -163,7 +203,7 @@ function App() {
                   id='phoneAgeIncreaseNone'
                   name="phoneAgeIncrease"
                   value={0}
-                  onChange={(e) => setAge(e.target.value)} />
+                  onChange={(e) => setExtraAge(e.target.value)} />
                 <label
                 className="peer-checked/phoneAgeIncreaseNone:bg-green-800 h-[56px] peer-checked/phoneAgeIncreaseNone:text-white flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer"
                 htmlFor="phoneAgeIncreaseNone">
@@ -174,8 +214,9 @@ function App() {
                   type="radio"
                   id='phoneAgeIncrease6mth'
                   name="phoneAgeIncrease"
+                  defaultChecked={true}
                   value={6}
-                  onChange={(e) => setAge(e.target.value)}
+                  onChange={(e) => setExtraAge(e.target.value)}
                   />
                    <label
                     htmlFor="phoneAgeIncrease6mth"
@@ -188,7 +229,7 @@ function App() {
                   id='phoneAgeIncrease12mth'
                   name="phoneAgeIncrease"
                   value={12}
-                  onChange={(e) => setAge(e.target.value)}
+                  onChange={(e) => setExtraAge(e.target.value)}
                   />
                    <label
                     htmlFor="phoneAgeIncrease12mth"
@@ -204,7 +245,7 @@ function App() {
                   id='amountPhoneIncreaseNone'
                   name="phoneIncrease"
                   value={1}
-                  onChange={(e) => setAge(e.target.value)} />
+                  onChange={(e) => setRefurbishedPhones(e.target.value)} />
                 <label
                 className="peer-checked/amountPhoneIncreaseNone:bg-green-800 h-[56px] peer-checked/amountPhoneIncreaseNone:text-white flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer"
                 htmlFor="amountPhoneIncreaseNone">
@@ -215,8 +256,9 @@ function App() {
                   type="radio"
                   id='amountPhoneIncrease10'
                   name="phoneIncrease"
+                  defaultChecked={true}
                   value={1.1}
-                  onChange={(e) => setAge(e.target.value)}
+                  onChange={(e) => setRefurbishedPhones(e.target.value)}
                   />
                    <label
                       htmlFor="amountPhoneIncrease10"
@@ -229,7 +271,7 @@ function App() {
                   id='amountPhoneIncrease25'
                   name="phoneIncrease"
                   value={1.25}
-                  onChange={(e) => setAge(e.target.value)}
+                  onChange={(e) => setRefurbishedPhones(e.target.value)}
                   />
                    <label
                     htmlFor="amountPhoneIncrease25"
