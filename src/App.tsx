@@ -17,6 +17,7 @@ function App() {
   const [phonePriceRefurbished, setPhonePriceRefurbished] = useState(4370)
   const [avgEmissions, setAvgEmissions] = useState(64)
   const [avgEmissionsRefurbished, setAvgEmissionsRefurbished] = useState(20)
+  const [promptAnswer, setPromptAnswer] = useState('');
 
   const handleCalcClick = () => {
     setCalcIsOpen(!calcIsOpen)
@@ -24,6 +25,11 @@ function App() {
   const handleAdjClick = () => {
     setAdjIsOpen(!adjIsOpen)
   
+  }
+
+  const handlePdfClick = () => {
+    const answer = prompt("Hva heter bedriften din?")
+    setPromptAnswer(answer);
   }
   console.log(typeof extraAge, typeof age, parseFloat(extraAge)+parseFloat(age))
 
@@ -64,6 +70,8 @@ function App() {
         <section id="savings" className="py-23 flex flex-col gap-4">
           <div className="bg-gray-100 p-4 flex flex-col gap-4">
             <h2>Dine besparelser</h2>
+            <button onClick={handlePdfClick}>Generer PDF</button>
+            {promptAnswer ? <p>{promptAnswer}</p> : null}
             <div className="flex gap-4">
               <input
                     className="hidden peer/savingsYearly"
