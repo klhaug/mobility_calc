@@ -5,7 +5,6 @@ import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 
 function App() {
-
   const [phoneAmount, setPhoneAmount] = useState(150);
   const [age, setAge] = useState(24);
   const [extraAge, setExtraAge] = useState(6)
@@ -13,7 +12,7 @@ function App() {
   const [calcIsOpen, setCalcIsOpen] = useState(false);
   const [adjIsOpen, setAdjIsOpen] = useState(false);
   const [phonePrice, setPhonePrice] = useState(8764);
-  const [refurbishedPhones, setRefurbishedPhones] = useState(1.1);
+  const [refurbishedPhones, setRefurbishedPhones] = useState(0.1);
   const [phonePriceRefurbished, setPhonePriceRefurbished] = useState(4370)
   const [avgEmissions, setAvgEmissions] = useState(64)
   const [avgEmissionsRefurbished, setAvgEmissionsRefurbished] = useState(20)
@@ -27,13 +26,54 @@ function App() {
   
   }
 
+  const calculateMonetarySavings = () => {
+    console.log(typeof phonePrice, typeof phoneAmount, typeof age,)
+    const newBuys = 1 - refurbishedPhones;
+    console.log(newBuys)
+
+    const costTotal = phonePrice * phoneAmount
+    const totalAge = Number(age) + Number(extraAge)
+    console.log(totalAge)
+    
+    //Newbuys Cost Montly
+    const costCurrentLifespanUnit = phonePrice / age;
+    const costCurrentLifespanTotal = costTotal / age;
+    //Newbuys Cost Montly(Slutt) 24 mnd 90% === 327,-
+    
+    //Refurbished Cost Monthly
+    const costRefurbishedTotal = (refurbishedPhones * phoneAmount * phonePriceRefurbished) / age;
+    const costRefurbishedUnit = costRefurbishedTotal / phoneAmount;
+    //Refurbished Cost Monthly(Slutt) 24mnd 10% === 18,- pr mnd per telefon
+
+    const costCurrentIncLifespanUnit = (phonePrice / totalAge) * newBuys + costRefurbishedUnit;
+    console.log(costCurrentIncLifespanUnit);
+
+    return {
+      costCurrentLifespanUnit: costCurrentLifespanUnit,
+      costCurrentLifespanTotal: costCurrentLifespanTotal,
+      costRefurbishedTotal: costRefurbishedTotal,
+      costRefurbishedUnit: costRefurbishedUnit,
+      costCurrentIncLifespanUnit: costCurrentIncLifespanUnit,
+    }
+  }
+
+  const calculations = calculateMonetarySavings();
+
+  const {costRefurbishedUnit, costCurrentLifespanUnit, costCurrentLifespanTotal, costCurrentIncLifespanUnit, costRefurbishedTotal } = calculations;
+
   const handlePdfClick = () => {
     const answer = prompt("Hva heter bedriften din?")
     setPromptAnswer(answer);
   }
-  console.log(typeof extraAge, typeof age, parseFloat(extraAge)+parseFloat(age))
+
+
+
+
+
+
 
   return (
+
     <>
       <header className="flex flex-col bg-gray-100">  
         <div className="flex items-center justify-between">
@@ -43,6 +83,14 @@ function App() {
         </div>
         <p className="w-2/3 text-start">Se hvor mye penger og
           CO2-utslipp din bedrift kan spare</p>
+          <div className="flex flex-col">
+            <p>Cost total unit: {Math.floor(costCurrentLifespanUnit)}</p>
+            <p>Cost Lifespan total: {Math.floor(costCurrentLifespanTotal)}</p>
+            <p>Refurbished Total:  {Math.floor(costRefurbishedTotal)}</p>
+            <p>Refurbished Unit:  {Math.floor(costRefurbishedUnit)}</p>
+            <p>Justert beregning: {Math.floor(costCurrentIncLifespanUnit)}</p>
+
+          </div>
       </header>
       <main className="pb-12">
         <section id="slider" className="flex items-center flex-col justify-center p-12">
@@ -65,6 +113,7 @@ function App() {
             trackColor="#D9D9D9"
             trackSize={24}
             onChange={value => setPhoneAmount(value)}
+            
         />
         </section>
         <section id="savings" className="py-23 flex flex-col gap-4">
@@ -145,6 +194,7 @@ function App() {
                             </tr>
                             <tr>
                 <td className="text-start">Justert kostnad per mnd</td>
+                  {/* Hvis det er refurbished phones, må vi trekke fra prosentandelen fra totalprisen, og legge til igjen prisen på refurbished. */}
                   <td  className="text-end" >{Math.floor(phonePrice / (parseFloat(age) + parseFloat(extraAge)))}</td>
                   <td  className="text-end" >{Math.floor((phonePrice * phoneAmount) / (age + extraAge))}</td>
                             </tr>
@@ -252,7 +302,7 @@ function App() {
                   type="radio"
                   id='amountPhoneIncreaseNone'
                   name="phoneIncrease"
-                  value={1}
+                  value={0}
                   onChange={(e) => setRefurbishedPhones(e.target.value)} />
                 <label
                 className="peer-checked/amountPhoneIncreaseNone:bg-green-800 h-[56px] peer-checked/amountPhoneIncreaseNone:text-white flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer"
@@ -265,7 +315,7 @@ function App() {
                   id='amountPhoneIncrease10'
                   name="phoneIncrease"
                   defaultChecked={true}
-                  value={1.1}
+                  value={0.1}
                   onChange={(e) => setRefurbishedPhones(e.target.value)}
                   />
                    <label
@@ -278,7 +328,7 @@ function App() {
                   type="radio"
                   id='amountPhoneIncrease25'
                   name="phoneIncrease"
-                  value={1.25}
+                  value={0.25}
                   onChange={(e) => setRefurbishedPhones(e.target.value)}
                   />
                    <label
