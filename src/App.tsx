@@ -28,8 +28,7 @@ function App() {
 
   const calculateMonetarySavings = () => {
     console.log(typeof phonePrice, typeof phoneAmount, typeof age,)
-    const newBuys = 1 - refurbishedPhones;
-    console.log(newBuys)
+    const newPhones = 1 - refurbishedPhones;
 
     const costTotal = phonePrice * phoneAmount
     const totalAge = Number(age) + Number(extraAge)
@@ -45,8 +44,10 @@ function App() {
     const costRefurbishedUnit = costRefurbishedTotal / phoneAmount;
     //Refurbished Cost Monthly(Slutt) 24mnd 10% === 18,- pr mnd per telefon
 
-    const costCurrentIncLifespanUnit = (phonePrice / totalAge) * newBuys + costRefurbishedUnit;
-    console.log(costCurrentIncLifespanUnit);
+    const costCurrentIncLifespanUnit = (phonePrice / totalAge) * newPhones + costRefurbishedUnit;
+    const savingsPerMonthPerUnit = costCurrentLifespanUnit - costCurrentIncLifespanUnit; 
+    const savingsPerYearPerUnit = savingsPerMonthPerUnit * 12;
+    const savingsLifeTime = savingsPerMonthPerUnit * totalAge;
 
     return {
       costCurrentLifespanUnit: costCurrentLifespanUnit,
@@ -54,12 +55,15 @@ function App() {
       costRefurbishedTotal: costRefurbishedTotal,
       costRefurbishedUnit: costRefurbishedUnit,
       costCurrentIncLifespanUnit: costCurrentIncLifespanUnit,
+      savingsPerMonthPerUnit: savingsPerMonthPerUnit,  
+      savingsPerYearPerUnit: savingsPerYearPerUnit, 
+      savingsLifeTime: savingsLifeTime 
     }
   }
 
   const calculations = calculateMonetarySavings();
 
-  const {costRefurbishedUnit, costCurrentLifespanUnit, costCurrentLifespanTotal, costCurrentIncLifespanUnit, costRefurbishedTotal } = calculations;
+  const { savingsPerMonthPerUnit, savingsLifeTime, costRefurbishedUnit, savingsPerYearPerUnit, costCurrentLifespanUnit, costCurrentLifespanTotal, costCurrentIncLifespanUnit, costRefurbishedTotal } = calculations;
 
   const handlePdfClick = () => {
     const answer = prompt("Hva heter bedriften din?")
@@ -84,11 +88,18 @@ function App() {
         <p className="w-2/3 text-start">Se hvor mye penger og
           CO2-utslipp din bedrift kan spare</p>
           <div className="flex flex-col">
+            
+            <p>Dagens kostnader per år: {(phonePrice)}</p>
+            <p>Dagens kostnader per år total: {phonePrice * phoneAmount}</p>
             <p>Cost total unit: {Math.floor(costCurrentLifespanUnit)}</p>
             <p>Cost Lifespan total: {Math.floor(costCurrentLifespanTotal)}</p>
             <p>Refurbished Total:  {Math.floor(costRefurbishedTotal)}</p>
             <p>Refurbished Unit:  {Math.floor(costRefurbishedUnit)}</p>
             <p>Justert beregning: {Math.floor(costCurrentIncLifespanUnit)}</p>
+            <p>Spart hver mnd: {Math.floor(savingsPerMonthPerUnit)}</p>
+            <p>Spart hvert år: {Math.floor(savingsPerYearPerUnit)}</p>
+            <p>Spart levetid per tlf: {Math.floor(savingsLifeTime)}</p>
+
 
           </div>
       </header>
