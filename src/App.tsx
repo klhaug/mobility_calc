@@ -8,7 +8,7 @@ function App() {
   const [phoneAmount, setPhoneAmount] = useState(150);
   const [age, setAge] = useState(24);
   const [extraAge, setExtraAge] = useState(6)
-  const [savings, setSavings] = useState(365);
+  const [savings, setSavings] = useState("yearly");
   const [calcIsOpen, setCalcIsOpen] = useState(false);
   const [adjIsOpen, setAdjIsOpen] = useState(false);
   const [phonePrice, setPhonePrice] = useState(8764);
@@ -32,7 +32,6 @@ function App() {
 
     const costTotal = phonePrice * phoneAmount
     const totalAge = Number(age) + Number(extraAge)
-    console.log(totalAge)
     
     //Newbuys Cost Montly
     const costCurrentLifespanUnit = phonePrice / age;
@@ -63,7 +62,15 @@ function App() {
 
   const calculations = calculateMonetarySavings();
 
-  const { savingsPerMonthPerUnit, savingsLifeTime, costRefurbishedUnit, savingsPerYearPerUnit, costCurrentLifespanUnit, costCurrentLifespanTotal, costCurrentIncLifespanUnit, costRefurbishedTotal } = calculations;
+  const { 
+    savingsPerMonthPerUnit,
+    savingsLifeTime,
+    savingsPerYearPerUnit, 
+    costCurrentLifespanUnit, 
+    costCurrentLifespanTotal, 
+    costCurrentIncLifespanUnit, 
+    costRefurbishedTotal 
+    } = calculations;
 
   const handlePdfClick = () => {
     const answer = prompt("Hva heter bedriften din?")
@@ -87,21 +94,6 @@ function App() {
         </div>
         <p className="w-2/3 text-start">Se hvor mye penger og
           CO2-utslipp din bedrift kan spare</p>
-          <div className="flex flex-col">
-            
-            <p>Dagens kostnader per år: {(phonePrice)}</p>
-            <p>Dagens kostnader per år total: {phonePrice * phoneAmount}</p>
-            <p>Cost total unit: {Math.floor(costCurrentLifespanUnit)}</p>
-            <p>Cost Lifespan total: {Math.floor(costCurrentLifespanTotal)}</p>
-            <p>Refurbished Total:  {Math.floor(costRefurbishedTotal)}</p>
-            <p>Refurbished Unit:  {Math.floor(costRefurbishedUnit)}</p>
-            <p>Justert beregning: {Math.floor(costCurrentIncLifespanUnit)}</p>
-            <p>Spart hver mnd: {Math.floor(savingsPerMonthPerUnit)}</p>
-            <p>Spart hvert år: {Math.floor(savingsPerYearPerUnit)}</p>
-            <p>Spart levetid per tlf: {Math.floor(savingsLifeTime)}</p>
-
-
-          </div>
       </header>
       <main className="pb-12">
         <section id="slider" className="flex items-center flex-col justify-center p-12">
@@ -139,7 +131,7 @@ function App() {
                     id='savingsYearly'
                     name="savings"
                     defaultChecked={true}
-                    value={12}
+                    value={"yearly"}
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
                     className="peer-checked/savingsYearly:bg-green-800 px-2 peer-checked/savingsYearly:text-white flex  w-fit items-center justify-center bg-green-100 hover:cursor-pointer"
@@ -151,7 +143,7 @@ function App() {
                     type="radio"
                     id='savingsLifetime'
                     name="savings"
-                    value={age + extraAge}
+                    value={"lifetime"}
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
                   className="peer-checked/savingsLifetime:bg-green-800 px-2 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
@@ -163,7 +155,9 @@ function App() {
               <div className="flex justify-between">
                 <p>NOK</p>
                 <p className="text-xl font-semibold">
-                  {((phoneAmount * phonePrice) / 12 * (savings))}
+                  {savings === 'yearly' ? Math.floor(savingsPerYearPerUnit * phoneAmount) : null}
+                  {savings === 'lifetime' ? Math.floor(savingsLifeTime* phoneAmount) : null}
+
                   </p>
               </div>
               <div className="flex justify-between">
@@ -200,19 +194,28 @@ function App() {
                             </tr>
                             <tr>
                 <td className="text-start">Dagens kostnad per mnd</td>
-                  <td  className="text-end" >{Math.floor(parseFloat(phonePrice) / parseFloat(age))}</td>
-                  <td  className="text-end" >{Math.floor(phonePrice * phoneAmount / age)}</td>
+                  <td  className="text-end" >{Math.floor(costCurrentLifespanUnit)}</td>
+                  <td  className="text-end" >{Math.floor(costCurrentLifespanTotal)}</td>
                             </tr>
                             <tr>
                 <td className="text-start">Justert kostnad per mnd</td>
-                  {/* Hvis det er refurbished phones, må vi trekke fra prosentandelen fra totalprisen, og legge til igjen prisen på refurbished. */}
-                  <td  className="text-end" >{Math.floor(phonePrice / (parseFloat(age) + parseFloat(extraAge)))}</td>
-                  <td  className="text-end" >{Math.floor((phonePrice * phoneAmount) / (age + extraAge))}</td>
+                  <td  className="text-end" >{Math.floor(costCurrentIncLifespanUnit)}</td>
+                  <td  className="text-end" >{Math.floor(costCurrentIncLifespanUnit * phoneAmount)}</td>
                             </tr>
                             <tr>
-                <td className="text-start">Dagens kostnader per år</td>
-                  <td  className="text-end" >{phonePrice}</td>
-                  <td  className="text-end" >{phonePrice * phoneAmount}</td>
+                <td className="text-start">Besparelse per mnd:</td>
+                  <td  className="text-end" >{Math.floor(savingsPerMonthPerUnit)}</td>
+                  <td  className="text-end" >{Math.floor(savingsPerMonthPerUnit * phoneAmount)}</td>
+                            </tr>
+                            <tr>
+                <td className="text-start">Besparelse per år:</td>
+                  <td  className="text-end" >{Math.floor(savingsPerYearPerUnit)}</td>
+                  <td  className="text-end" >{Math.floor(savingsPerYearPerUnit * phoneAmount)}</td>
+                            </tr>
+                            <tr>
+                <td className="text-start">Besparelse levetid {Number(age) + Number(extraAge)} år:</td>
+                  <td  className="text-end" >{Math.floor(savingsLifeTime)}</td>
+                  <td  className="text-end" >{Math.floor(savingsLifeTime* phoneAmount)}</td>
                             </tr>
               </tbody>
 
