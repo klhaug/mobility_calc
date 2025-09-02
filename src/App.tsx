@@ -60,6 +60,8 @@ function App() {
     }
   }
 
+
+
   const calculations = calculateMonetarySavings();
 
   const { 
@@ -78,10 +80,29 @@ function App() {
   }
 
 
+  const transformNumberIntoString = (number) => {
+    const numberAsString = Math.floor(number).toString();
+    console.log(numberAsString.length)
+    if(numberAsString.length === 4){
+      console.log(numberAsString)
+    }
+    if(numberAsString.length === 5){
+      const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2)
+      console.log(newString)
+    }
+    if(numberAsString.length === 6){
+      const newString = numberAsString.slice(0, 3) + " " + numberAsString.slice(3)
+      console.log(newString)
+    }
+    if(numberAsString.length === 7){
+      const newString = numberAsString.slice(0, 1) + " " + numberAsString.slice(1,4) + " " + numberAsString.slice(4)
+      console.log(newString)
+    }
 
-
-
-
+  
+  }
+  const actualSavingsLifeTime = savingsLifeTime * phoneAmount
+  transformNumberIntoString(actualSavingsLifeTime);
 
   return (
 
