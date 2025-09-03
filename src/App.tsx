@@ -26,12 +26,41 @@ function App() {
   
   }
 
+  const transformNumberIntoString = (number) => {
+    if(typeof number !== "number"){
+      alert("Please enter a valid number")
+      return;
+    }
+    const numberAsString = Math.floor(number).toString();
+    console.log(numberAsString.length)
+    if(numberAsString.length <= 4){
+      return numberAsString
+    }
+    if(numberAsString.length === 5){
+      const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2)
+      return newString;
+    }
+    if(numberAsString.length === 6){
+      const newString = numberAsString.slice(0, 3) + " " + numberAsString.slice(3)
+    return newString;
+    }
+    
+    if(numberAsString.length === 7){
+      const newString = numberAsString.slice(0, 1) + " " + numberAsString.slice(1,4) + " " + numberAsString.slice(4)
+    return newString;
+    }
+    if(numberAsString.length === 8){
+      const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2,5) + " " + numberAsString.slice(5)
+      return newString;
+    }
+  }
+
   const calculateMonetarySavings = () => {
-    console.log(typeof phonePrice, typeof phoneAmount, typeof age,)
     const newPhones = 1 - refurbishedPhones;
 
     const costTotal = phonePrice * phoneAmount
     const totalAge = Number(age) + Number(extraAge)
+    const costEachYearTotal= Math.floor(phonePrice * phoneAmount)
     
     //Newbuys Cost Montly
     const costCurrentLifespanUnit = phonePrice / age;
@@ -49,8 +78,11 @@ function App() {
     const savingsLifeTime = savingsPerMonthPerUnit * totalAge;
 
     return {
-      costCurrentLifespanUnit: costCurrentLifespanUnit,
-      costCurrentLifespanTotal: costCurrentLifespanTotal,
+      costEachYearPerUnit: transformNumberIntoString(phonePrice),
+      costEachYearTotal: transformNumberIntoString(costEachYearTotal),
+      costCurrentLifespanUnit:transformNumberIntoString(costCurrentLifespanUnit),
+      
+      costCurrentLifespanTotal:transformNumberIntoString(costCurrentLifespanTotal),
       costRefurbishedTotal: costRefurbishedTotal,
       costRefurbishedUnit: costRefurbishedUnit,
       costCurrentIncLifespanUnit: costCurrentIncLifespanUnit,
@@ -60,11 +92,10 @@ function App() {
     }
   }
 
-
-
   const calculations = calculateMonetarySavings();
 
   const { 
+    costEachYearTotal,
     savingsPerMonthPerUnit,
     savingsLifeTime,
     savingsPerYearPerUnit, 
@@ -80,27 +111,7 @@ function App() {
   }
 
 
-  const transformNumberIntoString = (number) => {
-    const numberAsString = Math.floor(number).toString();
-    console.log(numberAsString.length)
-    if(numberAsString.length === 4){
-      console.log(numberAsString)
-    }
-    if(numberAsString.length === 5){
-      const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2)
-      console.log(newString)
-    }
-    if(numberAsString.length === 6){
-      const newString = numberAsString.slice(0, 3) + " " + numberAsString.slice(3)
-      console.log(newString)
-    }
-    if(numberAsString.length === 7){
-      const newString = numberAsString.slice(0, 1) + " " + numberAsString.slice(1,4) + " " + numberAsString.slice(4)
-      console.log(newString)
-    }
 
-  
-  }
   const actualSavingsLifeTime = savingsLifeTime * phoneAmount
   transformNumberIntoString(actualSavingsLifeTime);
 
@@ -211,7 +222,7 @@ function App() {
                             <tr>
                 <td className="text-start">Dagens kostnader per år</td>
                   <td  className="text-end" >{phonePrice}</td>
-                  <td  className="text-end" >{phonePrice * phoneAmount}</td>
+                  <td  className="text-end" >kr {costEachYearTotal}</td>
                             </tr>
                             <tr>
                 <td className="text-start">Dagens kostnad per mnd</td>
