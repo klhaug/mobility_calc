@@ -25,33 +25,48 @@ function App() {
     setAdjIsOpen(!adjIsOpen)
   
   }
-
+//Takes a number, transforms it into a string and splits it into even numerical formatting based on the length of the string. Caps out at length 8.
   const transformNumberIntoString = (number) => {
     if(typeof number !== "number"){
       alert("Please enter a valid number")
       return;
     }
     const numberAsString = Math.floor(number).toString();
-    console.log(numberAsString.length)
-    if(numberAsString.length <= 4){
-      return numberAsString
-    }
-    if(numberAsString.length === 5){
-      const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2)
-      return newString;
-    }
-    if(numberAsString.length === 6){
-      const newString = numberAsString.slice(0, 3) + " " + numberAsString.slice(3)
-    return newString;
-    }
-    
-    if(numberAsString.length === 7){
-      const newString = numberAsString.slice(0, 1) + " " + numberAsString.slice(1,4) + " " + numberAsString.slice(4)
-    return newString;
-    }
-    if(numberAsString.length === 8){
-      const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2,5) + " " + numberAsString.slice(5)
-      return newString;
+    const stringLength = numberAsString.length;
+    switch(stringLength) {
+      case 4:
+        {
+          console.log(`The length of ${number} is ${stringLength}`)
+          return numberAsString; 
+        }
+      case 5:
+        {
+           console.log(`The length of ${number} is ${stringLength}`)
+           const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2)
+           return newString; 
+        }
+        case 6:
+        {
+          console.log(`The length of ${number} is ${stringLength}`)
+          const newString = numberAsString.slice(0, 3) + " " + numberAsString.slice(3)
+          return newString;
+        }
+        case 7:
+        {
+          console.log(`The length of ${number} is ${stringLength}`)
+          const newString = numberAsString.slice(0, 1) + " " + numberAsString.slice(1,4) + " " + numberAsString.slice(4)
+          return newString;
+        }
+        case 8:
+        {
+          console.log(`The length of ${number} is ${stringLength}`)
+          const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2,5) + " " + numberAsString.slice(5)
+          return newString;
+        }
+        case 9: {
+          console.error("This string is to long for current formatting code", numberAsString);
+          return numberAsString;
+        }
     }
   }
 
