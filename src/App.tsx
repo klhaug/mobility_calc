@@ -25,7 +25,7 @@ function App() {
     setAdjIsOpen(!adjIsOpen)
   
   }
-//Takes a number, transforms it into a string and splits it into even numerical formatting based on the length of the string. Caps out at length 8.
+//Takes a number, transforms it into a string and splits it into even numerical formatting based on the length of the string. Caps out at length 8. Length 9 logs an error and returns the number as a string unformatted. 
   const transformNumberIntoString = (number) => {
     if(typeof number !== "number"){
       alert("Please enter a valid number")
@@ -34,32 +34,38 @@ function App() {
     const numberAsString = Math.floor(number).toString();
     const stringLength = numberAsString.length;
     switch(stringLength) {
+      case 1:
+        return numberAsString;
+      case 2: 
+        return numberAsString;
+      case 3:
+        return numberAsString;
       case 4:
         {
-          console.log(`The length of ${number} is ${stringLength}`)
+          console.log(`The length of ${numberAsString} is ${stringLength}`)
           return numberAsString; 
         }
       case 5:
         {
-           console.log(`The length of ${number} is ${stringLength}`)
+           console.log(`The length of ${numberAsString} is ${stringLength}`)
            const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2)
            return newString; 
         }
         case 6:
         {
-          console.log(`The length of ${number} is ${stringLength}`)
+          console.log(`The length of ${numberAsString} is ${stringLength}`)
           const newString = numberAsString.slice(0, 3) + " " + numberAsString.slice(3)
           return newString;
         }
         case 7:
         {
-          console.log(`The length of ${number} is ${stringLength}`)
+          console.log(`The length of ${numberAsString} is ${stringLength}`)
           const newString = numberAsString.slice(0, 1) + " " + numberAsString.slice(1,4) + " " + numberAsString.slice(4)
           return newString;
         }
         case 8:
         {
-          console.log(`The length of ${number} is ${stringLength}`)
+          console.log(`The length of ${numberAsString} is ${stringLength}`)
           const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2,5) + " " + numberAsString.slice(5)
           return newString;
         }
@@ -87,23 +93,35 @@ function App() {
     const costRefurbishedUnit = costRefurbishedTotal / phoneAmount;
     //Refurbished Cost Monthly(Slutt) 24mnd 10% === 18,- pr mnd per telefon
 
-    const costCurrentIncLifespanUnit = (phonePrice / totalAge) * newPhones + costRefurbishedUnit;
-    const savingsPerMonthPerUnit = costCurrentLifespanUnit - costCurrentIncLifespanUnit; 
+    const adjustedCostPerUnit = (phonePrice / totalAge) * newPhones + costRefurbishedUnit;
+    const adjustedCostTotal = adjustedCostPerUnit * phoneAmount;
+
+    const savingsPerMonthPerUnit = costCurrentLifespanUnit - adjustedCostPerUnit; 
+    const savingsPerMonthTotal = savingsPerMonthPerUnit * phoneAmount;
+    
     const savingsPerYearPerUnit = savingsPerMonthPerUnit * 12;
+    const savingsPerYearTotal = savingsPerYearPerUnit * phoneAmount
     const savingsLifeTime = savingsPerMonthPerUnit * totalAge;
+    const savingsLifeTimeTotal = savingsLifeTime * phoneAmount;
 
     return {
       costEachYearPerUnit: transformNumberIntoString(phonePrice),
       costEachYearTotal: transformNumberIntoString(costEachYearTotal),
-      costCurrentLifespanUnit:transformNumberIntoString(costCurrentLifespanUnit),
       
+      costCurrentLifespanUnit: transformNumberIntoString(costCurrentLifespanUnit),
       costCurrentLifespanTotal:transformNumberIntoString(costCurrentLifespanTotal),
-      costRefurbishedTotal: costRefurbishedTotal,
-      costRefurbishedUnit: costRefurbishedUnit,
-      costCurrentIncLifespanUnit: costCurrentIncLifespanUnit,
-      savingsPerMonthPerUnit: savingsPerMonthPerUnit,  
-      savingsPerYearPerUnit: savingsPerYearPerUnit, 
-      savingsLifeTime: savingsLifeTime 
+
+      adjustedCostPerUnit: transformNumberIntoString(adjustedCostPerUnit),
+      adjustedCostTotal: transformNumberIntoString(adjustedCostTotal),
+      
+      savingsPerMonthPerUnit: transformNumberIntoString(savingsPerMonthPerUnit),  
+      savingsPerMonthTotal: transformNumberIntoString(savingsPerMonthTotal),  
+
+      savingsPerYearPerUnit: transformNumberIntoString(savingsPerYearPerUnit), 
+      savingsPerYearTotal: transformNumberIntoString(savingsPerYearTotal),
+
+      savingsLifeTime: transformNumberIntoString(savingsLifeTime),
+      savingsLifeTimeTotal: transformNumberIntoString(savingsLifeTimeTotal)
     }
   }
 
@@ -112,12 +130,15 @@ function App() {
   const { 
     costEachYearTotal,
     savingsPerMonthPerUnit,
+    savingsPerMonthTotal,
     savingsLifeTime,
+    savingsLifeTimeTotal,
     savingsPerYearPerUnit, 
+    savingsPerYearTotal,
     costCurrentLifespanUnit, 
     costCurrentLifespanTotal, 
-    costCurrentIncLifespanUnit, 
-    costRefurbishedTotal 
+    adjustedCostPerUnit, 
+    adjustedCostTotal,
     } = calculations;
 
   const handlePdfClick = () => {
@@ -125,10 +146,6 @@ function App() {
     setPromptAnswer(answer);
   }
 
-
-
-  const actualSavingsLifeTime = savingsLifeTime * phoneAmount
-  transformNumberIntoString(actualSavingsLifeTime);
 
   return (
 
@@ -201,9 +218,9 @@ function App() {
             <div className="flex flex-col gap-2">
               <div className="flex justify-between">
                 <p>NOK</p>
-                <p className="text-xl font-semibold">
-                  {savings === 'yearly' ? Math.floor(savingsPerYearPerUnit * phoneAmount) : null}
-                  {savings === 'lifetime' ? Math.floor(savingsLifeTime* phoneAmount) : null}
+                <p className="text-xl font-semibold"> kr  
+                  {savings === 'yearly' ? ` ${savingsPerYearTotal}` : null}
+                  {savings === 'lifetime' ?` ${savingsLifeTimeTotal}` : null}
 
                   </p>
               </div>
@@ -236,33 +253,33 @@ function App() {
                             </tr>
                             <tr>
                 <td className="text-start">Dagens kostnader per år</td>
-                  <td  className="text-end" >{phonePrice}</td>
+                  <td  className="text-end" >kr {phonePrice}</td>
                   <td  className="text-end" >kr {costEachYearTotal}</td>
                             </tr>
                             <tr>
                 <td className="text-start">Dagens kostnad per mnd</td>
-                  <td  className="text-end" >{Math.floor(costCurrentLifespanUnit)}</td>
-                  <td  className="text-end" >{Math.floor(costCurrentLifespanTotal)}</td>
+                  <td  className="text-end" >kr {costCurrentLifespanUnit}</td>
+                  <td  className="text-end" >kr {costCurrentLifespanTotal}</td>
                             </tr>
                             <tr>
                 <td className="text-start">Justert kostnad per mnd</td>
-                  <td  className="text-end" >{Math.floor(costCurrentIncLifespanUnit)}</td>
-                  <td  className="text-end" >{Math.floor(costCurrentIncLifespanUnit * phoneAmount)}</td>
+                  <td  className="text-end" >kr {adjustedCostPerUnit}</td>
+                  <td  className="text-end" >kr {adjustedCostTotal}</td>
                             </tr>
                             <tr>
                 <td className="text-start">Besparelse per mnd:</td>
-                  <td  className="text-end" >{Math.floor(savingsPerMonthPerUnit)}</td>
-                  <td  className="text-end" >{Math.floor(savingsPerMonthPerUnit * phoneAmount)}</td>
+                  <td  className="text-end" >kr {savingsPerMonthPerUnit}</td>
+                  <td  className="text-end" >kr {savingsPerMonthTotal}</td>
                             </tr>
                             <tr>
                 <td className="text-start">Besparelse per år:</td>
-                  <td  className="text-end" >{Math.floor(savingsPerYearPerUnit)}</td>
-                  <td  className="text-end" >{Math.floor(savingsPerYearPerUnit * phoneAmount)}</td>
+                  <td  className="text-end" >kr {savingsPerYearPerUnit}</td>
+                  <td  className="text-end" >kr {savingsPerYearTotal}</td>
                             </tr>
                             <tr>
                 <td className="text-start">Besparelse levetid {Number(age) + Number(extraAge)} år:</td>
-                  <td  className="text-end" >{Math.floor(savingsLifeTime)}</td>
-                  <td  className="text-end" >{Math.floor(savingsLifeTime* phoneAmount)}</td>
+                  <td  className="text-end" >kr {savingsLifeTime}</td>
+                  <td  className="text-end" >kr {savingsLifeTimeTotal}</td>
                             </tr>
               </tbody>
 
