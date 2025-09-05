@@ -42,30 +42,25 @@ function App() {
         return numberAsString;
       case 4:
         {
-          console.log(`The length of ${numberAsString} is ${stringLength}`)
           return numberAsString; 
         }
       case 5:
         {
-           console.log(`The length of ${numberAsString} is ${stringLength}`)
            const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2)
            return newString; 
         }
         case 6:
         {
-          console.log(`The length of ${numberAsString} is ${stringLength}`)
           const newString = numberAsString.slice(0, 3) + " " + numberAsString.slice(3)
           return newString;
         }
         case 7:
         {
-          console.log(`The length of ${numberAsString} is ${stringLength}`)
           const newString = numberAsString.slice(0, 1) + " " + numberAsString.slice(1,4) + " " + numberAsString.slice(4)
           return newString;
         }
         case 8:
         {
-          console.log(`The length of ${numberAsString} is ${stringLength}`)
           const newString = numberAsString.slice(0, 2) + " " + numberAsString.slice(2,5) + " " + numberAsString.slice(5)
           return newString;
         }
@@ -110,6 +105,12 @@ function App() {
     const co2SavingsLifeTime = co2SavingsPerMonthPerUnit * totalAge;
     const co2SavingsLifeTimeTotal = co2SavingsLifeTime * phoneAmount;
 
+    const flightComparison = co2SavingsLifeTimeTotal / 81.1;
+    const flightComparisonAnnual = (flightComparison / totalAge) * 12
+
+
+  
+
     return {
       co2EachYearPerUnit: transformNumberIntoString20(avgEmissions),
       co2Total: transformNumberIntoString(co2Total),
@@ -127,7 +128,10 @@ function App() {
       co2SavingsPerYearTotal: transformNumberIntoString(co2SavingsPerYearTotal),
 
       co2SavingsLifeTime: transformNumberIntoString20(co2SavingsLifeTime),
-      co2SavingsLifeTimeTotal: transformNumberIntoString(co2SavingsLifeTimeTotal)
+      co2SavingsLifeTimeTotal: transformNumberIntoString(co2SavingsLifeTimeTotal),
+
+      flightComparisonAnnual: transformNumberIntoString(flightComparisonAnnual),
+      flightComparison: transformNumberIntoString(flightComparison)
     }
   }
   const calculateMonetarySavings = () => {
@@ -179,6 +183,7 @@ function App() {
     }
   }
   
+  
 
 
   const calculations = calculateMonetarySavings();
@@ -210,13 +215,17 @@ function App() {
       co2SavingsPerYearPerUnit,
       co2SavingsPerYearTotal,
       co2SavingsLifeTime,
-      co2SavingsLifeTimeTotal
+      co2SavingsLifeTimeTotal,
+      flightComparison,
+      flightComparisonAnnual
     } = emissions;
 
   const handlePdfClick = () => {
     const answer = prompt("Hva heter bedriften din?")
     setPromptAnswer(answer);
   }
+
+ 
 
 
   return (
@@ -309,7 +318,10 @@ function App() {
                     <path d="M283.33-80v-88.67L406-254v-162.67L80-285.33v-108L406-622v-184q0-30.33 21.83-52.17Q449.67-880 480-880q30.33 0 52.17 21.83Q554-836.33 554-806v184l326 228.67v108L554-416.67V-254l122 85.33V-80l-196-59.33L283.33-80Z"/>
                   </svg>
                 </div>
-                <p>Dette tilsvarer {Math.floor(phoneAmount / 8)} flyreiser tur/retur Oslo/Bergen</p>
+                <p>Dette tilsvarer 
+                    {savings === "yearly" ? ` ${flightComparisonAnnual} ` : null}
+                    {savings === "lifetime" ? ` ${flightComparison} ` : null}
+                 flyreiser tur/retur Oslo/Bergen</p>
               </div>
             </div>
           </div>
