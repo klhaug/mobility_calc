@@ -75,7 +75,61 @@ function App() {
         }
     }
   }
+  //and then I found out about this method...
+  const transformNumberIntoString20 = (number) => {
+    return number.toLocaleString("nn-NO", {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1, 
+    })
+  }
 
+  const calculateEmissions = () => {
+    const newPhones = 1 - refurbishedPhones;
+
+    const co2Total = avgEmissions * phoneAmount
+    const totalAge = Number(age) + Number(extraAge)
+
+    //New Phone Emissions Montly
+    const co2CurrentLifespanUnit = avgEmissions / age;
+    const co2CurrentLifespanTotal = co2Total  / age;
+    //Newbuys Cost Montly(Slutt) 24 mnd 90% === 327,-
+    
+    //Refurbished Emission Monthly
+    const co2RefurbishedTotal = (refurbishedPhones * phoneAmount * avgEmissionsRefurbished) / age;
+    const co2RefurbishedUnit = co2RefurbishedTotal / phoneAmount;
+    //Refurbished Emissions Monthly(Slutt) 24mnd 10% === 18,- pr mnd per telefon
+
+    const adjustedEmissionsPerUnit = (avgEmissions / totalAge) * newPhones + co2RefurbishedUnit;
+    const adjustedEmissionsTotal = adjustedEmissionsPerUnit * phoneAmount;
+
+    const co2SavingsPerMonthPerUnit = co2CurrentLifespanUnit - adjustedEmissionsPerUnit; 
+    const co2SavingsPerMonthTotal = co2SavingsPerMonthPerUnit * phoneAmount;
+    
+    const co2SavingsPerYearPerUnit = co2SavingsPerMonthPerUnit * 12;
+    const co2SavingsPerYearTotal = co2SavingsPerYearPerUnit * phoneAmount
+    const co2SavingsLifeTime = co2SavingsPerMonthPerUnit * totalAge;
+    const co2SavingsLifeTimeTotal = co2SavingsLifeTime * phoneAmount;
+
+    return {
+      co2EachYearPerUnit: transformNumberIntoString20(avgEmissions),
+      co2Total: transformNumberIntoString(co2Total),
+      
+      co2CurrentLifespanUnit: transformNumberIntoString20(co2CurrentLifespanUnit),
+      co2CurrentLifespanTotal:transformNumberIntoString(co2CurrentLifespanTotal),
+
+      adjustedEmissionsPerUnit: transformNumberIntoString20(adjustedEmissionsPerUnit),
+      adjustedEmissionsTotal: transformNumberIntoString(adjustedEmissionsTotal),
+      
+      co2SavingsPerMonthPerUnit: transformNumberIntoString20(co2SavingsPerMonthPerUnit),  
+      co2SavingsPerMonthTotal: transformNumberIntoString(co2SavingsPerMonthTotal),  
+
+      co2SavingsPerYearPerUnit: transformNumberIntoString20(co2SavingsPerYearPerUnit), 
+      co2SavingsPerYearTotal: transformNumberIntoString(co2SavingsPerYearTotal),
+
+      co2SavingsLifeTime: transformNumberIntoString20(co2SavingsLifeTime),
+      co2SavingsLifeTimeTotal: transformNumberIntoString(co2SavingsLifeTimeTotal)
+    }
+  }
   const calculateMonetarySavings = () => {
     const newPhones = 1 - refurbishedPhones;
 
@@ -124,8 +178,11 @@ function App() {
       savingsLifeTimeTotal: transformNumberIntoString(savingsLifeTimeTotal)
     }
   }
+  
+
 
   const calculations = calculateMonetarySavings();
+  const emissions = calculateEmissions();
 
   const { 
     costEachYearTotal,
@@ -140,6 +197,21 @@ function App() {
     adjustedCostPerUnit, 
     adjustedCostTotal,
     } = calculations;
+
+    const {
+      co2EachYearPerUnit,
+      co2Total,
+      co2CurrentLifespanUnit,
+      co2CurrentLifespanTotal,
+      adjustedEmissionsPerUnit,
+      adjustedEmissionsTotal,
+      co2SavingsPerMonthPerUnit,
+      co2SavingsPerMonthTotal,
+      co2SavingsPerYearPerUnit,
+      co2SavingsPerYearTotal,
+      co2SavingsLifeTime,
+      co2SavingsLifeTimeTotal
+    } = emissions;
 
   const handlePdfClick = () => {
     const answer = prompt("Hva heter bedriften din?")
@@ -226,7 +298,10 @@ function App() {
               </div>
               <div className="flex justify-between">
                 <p>Kg CO2e</p>
-                <p className="text-xl font-semibold">{Math.floor(((phoneAmount * 8500) - (phoneAmount * 4500))/12)} kg</p>
+                <p className="text-xl font-semibold"> kg
+                  {savings === 'yearly' ? ` ${co2SavingsPerYearTotal}` : null}
+                  {savings === 'lifetime' ?` ${co2SavingsLifeTimeTotal}` : null}
+                  </p>
               </div>
               <div  className="flex items-center gap-4">
                 <div>
@@ -280,6 +355,46 @@ function App() {
                 <td className="text-start">Besparelse levetid {Number(age) + Number(extraAge)} år:</td>
                   <td  className="text-end" >kr {savingsLifeTime}</td>
                   <td  className="text-end" >kr {savingsLifeTimeTotal}</td>
+                            </tr>
+              </tbody>
+
+            </table>
+            <table>
+              <tbody>
+                <tr>
+                  <th className="text-start">Utslipp (CO2e)</th>
+                  <th  className="text-end" >Pr enhet</th>
+                  <th className="text-end">Totalt:</th>
+                            </tr>
+                            <tr>
+                <td className="text-start">Dagens utslipp per år</td>
+                  <td  className="text-end" >kg {co2EachYearPerUnit}</td>
+                  <td  className="text-end" >kg {co2Total}</td>
+                            </tr>
+                            <tr>
+                <td className="text-start">Dagens utslipp per mnd</td>
+                  <td  className="text-end" >kg {co2CurrentLifespanUnit}</td>
+                  <td  className="text-end" >kg {co2CurrentLifespanTotal}</td>
+                            </tr>
+                            <tr>
+                <td className="text-start">Justert utslipp per mnd</td>
+                  <td  className="text-end" >kg {adjustedEmissionsPerUnit}</td>
+                  <td  className="text-end" >kg {adjustedEmissionsTotal}</td>
+                            </tr>
+                            <tr>
+                <td className="text-start">Besparelse per mnd:</td>
+                  <td  className="text-end" >kg {co2SavingsPerMonthPerUnit}</td>
+                  <td  className="text-end" >kg {co2SavingsPerMonthTotal}</td>
+                            </tr>
+                            <tr>
+                <td className="text-start">Besparelse per år:</td>
+                  <td  className="text-end" >kg {co2SavingsPerYearPerUnit}</td>
+                  <td  className="text-end" >kg {co2SavingsPerYearTotal}</td>
+                            </tr>
+                            <tr>
+                <td className="text-start">Besparelse levetid {Number(age) + Number(extraAge)} år:</td>
+                  <td  className="text-end" >kg {co2SavingsLifeTime}</td>
+                  <td  className="text-end" >kg {co2SavingsLifeTimeTotal}</td>
                             </tr>
               </tbody>
 
