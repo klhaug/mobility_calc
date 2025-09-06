@@ -3,6 +3,11 @@ import { useState } from 'react';
 import CircularSlider from '@fseehawer/react-circular-slider';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
+import {PDFDownloadLink, Page, Text, Image, View, Document, StyleSheet, PDFViewer, Font } from '@react-pdf/renderer';
+
+
+
+
 
 function App() {
   const [phoneAmount, setPhoneAmount] = useState(150);
@@ -25,6 +30,11 @@ function App() {
     setAdjIsOpen(!adjIsOpen)
   
   }
+  const createCurrentDate = () => {
+    const date = new Date;
+    return date.toLocaleDateString();
+  }
+  console.log(createCurrentDate())
 //Takes a number, transforms it into a string and splits it into even numerical formatting based on the length of the string. Caps out at length 8. Length 9 logs an error and returns the number as a string unformatted. 
   const transformNumberIntoString = (number) => {
     if(typeof number !== "number"){
@@ -220,17 +230,11 @@ function App() {
       flightComparisonAnnual
     } = emissions;
 
-  const handlePdfClick = () => {
-    const answer = prompt("Hva heter bedriften din?")
-    setPromptAnswer(answer);
-  }
 
  
+return (
 
-
-  return (
-
-    <>
+  <>
       <header className="flex flex-col bg-gray-100">  
         <div className="flex items-center justify-between">
           <h1>Klimakalkulator</h1>
@@ -267,7 +271,23 @@ function App() {
         <section id="savings" className="py-23 flex flex-col gap-4">
           <div className="bg-gray-100 p-4 flex flex-col gap-4">
             <h2>Dine besparelser</h2>
-            <button onClick={handlePdfClick}>Generer PDF</button>
+            <PDFDownloadLink 
+              document= {
+                <MyDocument 
+                  phonePrice={phonePrice} 
+                  avgEmissions={avgEmissions}
+                  />
+                } 
+                fileName={`${createCurrentDate()} - Mobility Klimakalkulator`}>
+              {({ blob, url, loading, error }) =>
+              loading ? 'Loading document...' : "Last ned PDF"
+            }
+            </PDFDownloadLink>
+            <PDFViewer>
+              <MyDocument 
+                phonePrice={phonePrice} 
+                avgEmissions={avgEmissions}/>
+            </PDFViewer>
             {promptAnswer ? <p>{promptAnswer}</p> : null}
             <div className="flex gap-4">
               <input
@@ -291,8 +311,8 @@ function App() {
                     value={"lifetime"}
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
-                  className="peer-checked/savingsLifetime:bg-green-800 px-2 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
-                  htmlFor="savingsLifetime">
+                    className="peer-checked/savingsLifetime:bg-green-800 px-2 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
+                    htmlFor="savingsLifetime">
                     Levetid
                   </label>
             </div>
@@ -633,5 +653,70 @@ function App() {
     </>
   )
 }
+
+// Create styles
+const styles = StyleSheet.create({
+  body: {
+    paddingTop: 35,
+    paddingBottom: 65,
+    paddingHorizontal: 35,
+    fontFamily: 'Montserrat',
+  },
+  section: {
+  },
+  logo: {
+    fontSize: 32,
+  },
+    text: {
+      fontSize: 14,
+      textAlign: 'justify',
+    },
+    table: {
+      display: "flex",
+      flexDirection: "row",
+      fontSize: 14,
+      justifyContent: "space-between",
+    }
+});
+
+Font.register({family: "Montserrat", src:"https://fonts.gstatic.com/s/montserrat/v10/zhcz-_WihjSQC0oHJ9TCYC3USBnSvpkopQaUR-2r7iU.ttf"})
+
+
+
+// Create Document Component
+const MyDocument = ({phonePrice, avgEmissions}) => {
+ 
+
+  return (
+  <Document>
+    <Page size="A4" style={styles.body}>
+      <Text style={styles.text}>Mobility AS - Klimakalkulator</Text>
+      <View style={styles.section}>
+          <Text>Dine besparelser:</Text>
+          <View style={styles.table}>
+            <Text>Penger (NOK)</Text>
+            <View style={{display: "flex", flexDirection: "row", gap: 24}}>
+              <Text style={{textAlign: "right", width: 96}}>Per enhet:</Text>
+              <Text style={{textAlign: "right", width: 96}}>Totalt:</Text>
+            </View>
+          </View>
+          <View style={styles.table}>
+            <Text>Dagens kostnader per år:</Text>
+            <View style={{display: "flex", flexDirection: "row", gap: 24}}>
+              <Text style={{textAlign: "right", width: 96}}>kr {phonePrice}</Text>
+              <Text style={{textAlign: "right", width: 96}}>kg 10 234 932</Text>
+            </View>
+          </View>
+            
+            
+            
+          <Text>Med {phonePrice} mobiltelefoner i din bedrift er dette dine kostnader og dine besparelser:</Text>
+          <Text>{phonePrice}</Text>
+          <Text>Section #2</Text>
+      </View>
+    </Page>
+  </Document>
+)};
+
 
 export default App
