@@ -311,10 +311,10 @@ return (
                 } 
                 fileName={`${createCurrentDate()} - Mobility Klimakalkulator`}>
               {({ blob, url, loading, error }) =>
-              loading ? 'Genererer PDF' : "Last ned PDF"
+              loading ? 'Last ned PDF' : "Last ned PDF"
             }
             </PDFDownloadLink>
-            <PDFViewer>
+            {/*<PDFViewer>
               <MyDocument 
               age= {age}
               extraAge = {extraAge}
@@ -351,7 +351,7 @@ return (
                 flightComparison={flightComparison}
                 flightComparisonAnnual={flightComparisonAnnual}
                 />
-            </PDFViewer>
+            </PDFViewer>*/}
             <div className="flex gap-4">
               <input
                     className="hidden peer/savingsYearly"
