@@ -3,7 +3,7 @@ import { useState } from 'react';
 import CircularSlider from '@fseehawer/react-circular-slider';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
-import {PDFDownloadLink, Page, Text, Image, View, Document, StyleSheet, PDFViewer, Font } from '@react-pdf/renderer';
+import {PDFDownloadLink, Page, Text, View, Document, StyleSheet, PDFViewer, Font } from '@react-pdf/renderer';
 
 
 
@@ -21,7 +21,6 @@ function App() {
   const [phonePriceRefurbished, setPhonePriceRefurbished] = useState(4370)
   const [avgEmissions, setAvgEmissions] = useState(64)
   const [avgEmissionsRefurbished, setAvgEmissionsRefurbished] = useState(20)
-  const [promptAnswer, setPromptAnswer] = useState('');
 
   const handleCalcClick = () => {
     setCalcIsOpen(!calcIsOpen)
@@ -274,8 +273,32 @@ return (
             <PDFDownloadLink 
               document= {
                 <MyDocument 
-                  phonePrice={phonePrice} 
-                  avgEmissions={avgEmissions}
+                phonePrice = {phonePrice}
+                costEachYearTotal={costEachYearTotal}
+                costCurrentLifespanUnit={costCurrentLifespanUnit}
+                costCurrentLifespanTotal={costCurrentLifespanTotal}
+                adjustedCostPerUnit
+                adjustedCostTotal={adjustedCostTotal}
+                savingsPerMonthPerUnit={savingsPerMonthPerUnit}
+                savingsPerMonthTotal={savingsPerMonthTotal}
+                savingsPerYearPerUnit={savingsPerYearPerUnit}
+                savingsPerYearTotal={savingsPerYearTotal}
+                savingsLifeTime={savingsLifeTime}
+                savingsLifeTimeTotal={savingsLifeTimeTotal}
+                co2EachYearPerUnit={co2EachYearPerUnit}
+                co2Total={co2Total}
+                co2CurrentLifespanUnit={co2CurrentLifespanUnit}
+                co2CurrentLifespanTotal={co2CurrentLifespanTotal}
+                adjustedEmissionsPerUnit={adjustedEmissionsPerUnit}
+                adjustedEmissionsTotal={adjustedEmissionsTotal}
+                co2SavingsPerMonthPerUnit={co2SavingsPerMonthPerUnit}
+                co2SavingsPerMonthTotal={co2SavingsPerMonthTotal}
+                co2SavingsPerYearPerUnit={co2SavingsPerYearPerUnit}
+                co2SavingsPerYearTotal={co2SavingsPerYearTotal}
+                co2SavingsLifeTime={co2SavingsLifeTime}
+                co2SavingsLifeTimeTotal={co2SavingsLifeTimeTotal}
+                flightComparison={flightComparison}
+                flightComparisonAnnual={flightComparisonAnnual}
                   />
                 } 
                 fileName={`${createCurrentDate()} - Mobility Klimakalkulator`}>
@@ -285,10 +308,34 @@ return (
             </PDFDownloadLink>
             <PDFViewer>
               <MyDocument 
-                phonePrice={phonePrice} 
-                avgEmissions={avgEmissions}/>
+                phonePrice = {phonePrice}
+                costEachYearTotal={costEachYearTotal}
+                costCurrentLifespanUnit={costCurrentLifespanUnit}
+                costCurrentLifespanTotal={costCurrentLifespanTotal}
+                adjustedCostPerUnit={adjustedCostPerUnit}
+                adjustedCostTotal={adjustedCostTotal}
+                savingsPerMonthPerUnit={savingsPerMonthPerUnit}
+                savingsPerMonthTotal={savingsPerMonthTotal}
+                savingsPerYearPerUnit={savingsPerYearPerUnit}
+                savingsPerYearTotal={savingsPerYearTotal}
+                savingsLifeTime={savingsLifeTime}
+                savingsLifeTimeTotal={savingsLifeTimeTotal}
+                co2EachYearPerUnit={co2EachYearPerUnit}
+                co2Total={co2Total}
+                co2CurrentLifespanUnit={co2CurrentLifespanUnit}
+                co2CurrentLifespanTotal={co2CurrentLifespanTotal}
+                adjustedEmissionsPerUnit={adjustedEmissionsPerUnit}
+                adjustedEmissionsTotal={adjustedEmissionsTotal}
+                co2SavingsPerMonthPerUnit={co2SavingsPerMonthPerUnit}
+                co2SavingsPerMonthTotal={co2SavingsPerMonthTotal}
+                co2SavingsPerYearPerUnit={co2SavingsPerYearPerUnit}
+                co2SavingsPerYearTotal={co2SavingsPerYearTotal}
+                co2SavingsLifeTime={co2SavingsLifeTime}
+                co2SavingsLifeTimeTotal={co2SavingsLifeTimeTotal}
+                flightComparison={flightComparison}
+                flightComparisonAnnual={flightComparisonAnnual}
+                />
             </PDFViewer>
-            {promptAnswer ? <p>{promptAnswer}</p> : null}
             <div className="flex gap-4">
               <input
                     className="hidden peer/savingsYearly"
@@ -684,7 +731,35 @@ Font.register({family: "Montserrat", src:"https://fonts.gstatic.com/s/montserrat
 
 
 // Create Document Component
-const MyDocument = ({phonePrice, avgEmissions}) => {
+const MyDocument = ({
+    phonePrice,
+    costEachYearTotal,
+    costCurrentLifespanUnit,
+    costCurrentLifespanTotal,
+    adjustedCostPerUnit,
+    adjustedCostTotal,
+    savingsPerMonthPerUnit,
+    savingsPerMonthTotal,
+    savingsPerYearPerUnit,
+    savingsPerYearTotal,
+    savingsLifeTime,
+    savingsLifeTimeTotal,
+    co2EachYearPerUnit,
+    co2Total,
+    co2CurrentLifespanUnit,
+    co2CurrentLifespanTotal,
+    adjustedEmissionsPerUnit,
+    adjustedEmissionsTotal,
+    co2SavingsPerMonthPerUnit,
+    co2SavingsPerMonthTotal,
+    co2SavingsPerYearPerUnit,
+    co2SavingsPerYearTotal,
+    co2SavingsLifeTime,
+    co2SavingsLifeTimeTotal,
+    flightComparison,
+    flightComparisonAnnual
+
+  }) => {
  
 
   return (
@@ -704,12 +779,45 @@ const MyDocument = ({phonePrice, avgEmissions}) => {
             <Text>Dagens kostnader per år:</Text>
             <View style={{display: "flex", flexDirection: "row", gap: 24}}>
               <Text style={{textAlign: "right", width: 96}}>kr {phonePrice}</Text>
-              <Text style={{textAlign: "right", width: 96}}>kg 10 234 932</Text>
+              <Text style={{textAlign: "right", width: 96}}>{costEachYearTotal}</Text>
             </View>
           </View>
-            
-            
-            
+          <View style={styles.table}>
+            <Text>Dagens kostnad per mnd:</Text>
+            <View style={{display: "flex", flexDirection: "row", gap: 24}}>
+              <Text style={{textAlign: "right", width: 96}}>kr {costCurrentLifespanUnit}</Text>
+              <Text style={{textAlign: "right", width: 96}}>{costCurrentLifespanTotal}</Text>
+            </View>
+          </View>
+          <View style={styles.table}>
+            <Text>Justert kostnad per mnd:</Text>
+            <View style={{display: "flex", flexDirection: "row", gap: 24}}>
+              <Text style={{textAlign: "right", width: 96}}>kr {adjustedCostPerUnit}</Text>
+              <Text style={{textAlign: "right", width: 96}}>{adjustedCostTotal}</Text>
+            </View>
+          </View>
+          <View style={styles.table}>
+            <Text>Besparelse per mnd:</Text>
+            <View style={{display: "flex", flexDirection: "row", gap: 24}}>
+              <Text style={{textAlign: "right", width: 96}}>kr {savingsPerMonthPerUnit}</Text>
+              <Text style={{textAlign: "right", width: 96}}>{savingsPerMonthTotal}</Text>
+            </View>
+          </View>
+          <View style={styles.table}>
+            <Text>Besparelse per år:</Text>
+            <View style={{display: "flex", flexDirection: "row", gap: 24}}>
+              <Text style={{textAlign: "right", width: 96}}>kr {savingsPerYearPerUnit}</Text>
+              <Text style={{textAlign: "right", width: 96}}>{savingsPerYearTotal}</Text>
+            </View>
+          </View>
+          <View style={styles.table}>
+            <Text>Besparelse levetid</Text>
+            <View style={{display: "flex", flexDirection: "row", gap: 24}}>
+              <Text style={{textAlign: "right", width: 96}}>kr {savingsLifeTime}</Text>
+              <Text style={{textAlign: "right", width: 96}}>{savingsLifeTimeTotal}</Text>
+            </View>
+          </View>
+
           <Text>Med {phonePrice} mobiltelefoner i din bedrift er dette dine kostnader og dine besparelser:</Text>
           <Text>{phonePrice}</Text>
           <Text>Section #2</Text>
