@@ -1,9 +1,9 @@
 import './App.css'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CircularSlider from '@fseehawer/react-circular-slider';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
-import {PDFDownloadLink, Page, Text, View, Document, StyleSheet, PDFViewer, Font } from '@react-pdf/renderer';
+import {PDFDownloadLink, Page, Text, View, Document, StyleSheet, Font } from '@react-pdf/renderer';
 
 
 
@@ -21,6 +21,7 @@ function App() {
   const [phonePriceRefurbished, setPhonePriceRefurbished] = useState(4370)
   const [avgEmissions, setAvgEmissions] = useState(64)
   const [avgEmissionsRefurbished, setAvgEmissionsRefurbished] = useState(20)
+  const [screenWidth, setScreenWidth] = useState(screen.width)
 
   const handleCalcClick = () => {
     setCalcIsOpen(!calcIsOpen)
@@ -33,7 +34,16 @@ function App() {
     const date = new Date;
     return date.toLocaleDateString();
   }
-  console.log(createCurrentDate())
+useEffect(() => {
+  window.addEventListener("resize", () => {
+  console.log("its working")
+  setScreenWidth(screen.width)
+})
+},[screenWidth])
+
+
+
+
 //Takes a number, transforms it into a string and splits it into even numerical formatting based on the length of the string. Caps out at length 8. Length 9 logs an error and returns the number as a string unformatted. 
   const transformNumberIntoString = (number) => {
     if(typeof number !== "number"){
@@ -234,23 +244,23 @@ function App() {
 return (
 
   <>
-      <header className="flex flex-col bg-gray-100">  
+      <header className="flex flex-col bg-gray-100 p-6">  
         <div className="flex items-center justify-between">
-          <h1>Klimakalkulator</h1>
-          <p>Mobility</p>
+          <h1 className="text-green-500 text-xl font-bold uppercase">Klimakalkulator</h1>
+        <img src="/mobility_logo_black.svg" alt="logo"/>
         {/* Bytt ut m. img og logo */}
         </div>
-        <p className="w-2/3 text-start">Se hvor mye penger og
+        <p className="w-2/3 text-start text-sm">Se hvor mye penger og
           CO2-utslipp din bedrift kan spare</p>
       </header>
       <main className="pb-12">
-        <section id="slider" className="flex items-center flex-col justify-center p-12">
+        <section id="slider" className="flex items-center flex-col justify-center p-4">
           <CircularSlider
             label="Mobiltelefoner i din bedrift"
             labelColor="#000000"
             labelFontSize="12px"
             knobColor="#06620A"
-            width={400}
+            width={screenWidth > 400 ? 400 : 300}
             initialValue={150}
             dataIndex={phoneAmount - 1}
             knobSize={48}
@@ -267,9 +277,13 @@ return (
             
         />
         </section>
-        <section id="savings" className="py-23 flex flex-col gap-4">
-          <div className="bg-gray-100 p-4 flex flex-col gap-4">
-            <h2>Dine besparelser</h2>
+        <section id="savings" className="py-23 flex flex-col w-[calc(100vw_-_40px)] m-auto max-w-[768px] gap-4">
+          <div className="bg-gray-100 p-8 flex flex-col  gap-8">
+            <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-start">
+            <h2 className="text-xl font-semibold">Dine besparelser</h2>
+            <div className="flex items-center gap-1 text-sm hover:underline underline-offset-2">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#06620A"><path d="M480-336 288-528l51-51 105 105v-342h72v342l105-105 51 51-192 192ZM263.72-192Q234-192 213-213.15T192-264v-72h72v72h432v-72h72v72q0 29.7-21.16 50.85Q725.68-192 695.96-192H263.72Z"/></svg>
             <PDFDownloadLink 
               document= {
                 <MyDocument 
@@ -314,6 +328,8 @@ return (
               loading ? 'Last ned PDF' : "Last ned PDF"
             }
             </PDFDownloadLink>
+              </div>
+            </div>
             {/*<PDFViewer>
               <MyDocument 
               age= {age}
@@ -374,15 +390,16 @@ return (
                     value={"lifetime"}
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
-                    className="peer-checked/savingsLifetime:bg-green-800 px-2 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
+                    className="peer-checked/savingsLifetime:bg-green-500 px-2 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
                     htmlFor="savingsLifetime">
                     Levetid
                   </label>
             </div>
+          </div>
             <div className="flex flex-col gap-2">
               <div className="flex justify-between">
                 <p>NOK</p>
-                <p className="text-xl font-semibold"> kr  
+                <p className="text-xl w-[200px] text-right font-semibold"> kr  
                   {savings === 'yearly' ? ` ${savingsPerYearTotal}` : null}
                   {savings === 'lifetime' ?` ${savingsLifeTimeTotal}` : null}
 
@@ -390,7 +407,7 @@ return (
               </div>
               <div className="flex justify-between">
                 <p>Kg CO2e</p>
-                <p className="text-xl font-semibold"> kg
+                <p className="text-xl w-[200px] text-right font-semibold"> kg
                   {savings === 'yearly' ? ` ${co2SavingsPerYearTotal}` : null}
                   {savings === 'lifetime' ?` ${co2SavingsLifeTimeTotal}` : null}
                   </p>

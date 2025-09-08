@@ -1,6 +1,14 @@
 @import "tailwindcss";
 
 
+@theme {
+  --color-green-100: #DCF9DD;
+  --color-green-300: #38AF3D;
+  --color-green-500: #06620A;
+  --color-green-700: #073C0A;
+}
+
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
