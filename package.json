@@ -13,6 +13,7 @@
     "@fseehawer/react-circular-slider": "^3.2.7",
     "@react-pdf/renderer": "^4.3.0",
     "@tailwindcss/vite": "^4.1.12",
+    "@uidotdev/usehooks": "^2.4.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-range-slider-input": "^3.2.1",

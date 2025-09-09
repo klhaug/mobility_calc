@@ -4,9 +4,7 @@ import CircularSlider from '@fseehawer/react-circular-slider';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import {PDFDownloadLink, Page, Text, View, Document, StyleSheet, Font } from '@react-pdf/renderer';
-
-
-
+import { useWindowSize } from "@uidotdev/usehooks";
 
 
 function App() {
@@ -21,7 +19,7 @@ function App() {
   const [phonePriceRefurbished, setPhonePriceRefurbished] = useState(4370)
   const [avgEmissions, setAvgEmissions] = useState(64)
   const [avgEmissionsRefurbished, setAvgEmissionsRefurbished] = useState(20)
-  const [screenWidth, setScreenWidth] = useState(screen.width)
+  const size = useWindowSize();
 
   const handleCalcClick = () => {
     setCalcIsOpen(!calcIsOpen)
@@ -34,14 +32,10 @@ function App() {
     const date = new Date;
     return date.toLocaleDateString();
   }
-useEffect(() => {
-  window.addEventListener("resize", () => {
-  console.log("its working")
-  setScreenWidth(screen.width)
-})
-},[screenWidth])
 
 
+console.log(size)
+console.log(size.width)
 
 
 //Takes a number, transforms it into a string and splits it into even numerical formatting based on the length of the string. Caps out at length 8. Length 9 logs an error and returns the number as a string unformatted. 
@@ -244,7 +238,7 @@ useEffect(() => {
 return (
 
   <>
-      <header className="flex flex-col bg-gray-100 p-6">  
+      <header className="flex flex-col w-full bg-gray-100 p-6 m-auto  max-w-[768px]">  
         <div className="flex items-center justify-between">
           <h1 className="text-green-500 text-xl font-bold uppercase">Klimakalkulator</h1>
         <img src="/mobility_logo_black.svg" alt="logo"/>
@@ -253,14 +247,14 @@ return (
         <p className="w-2/3 text-start text-sm">Se hvor mye penger og
           CO2-utslipp din bedrift kan spare</p>
       </header>
-      <main className="pb-12">
-        <section id="slider" className="flex items-center flex-col justify-center p-4">
+      <main className="pb-12 ">
+        <section id="slider" className="flex items-center flex-col justify-center py-24">
           <CircularSlider
             label="Mobiltelefoner i din bedrift"
             labelColor="#000000"
             labelFontSize="12px"
             knobColor="#06620A"
-            width={screenWidth > 400 ? 400 : 300}
+            width={size.width < 768 ? (size.width > 420 ? size.width - 120 : size.width - 64) : 400}
             initialValue={150}
             dataIndex={phoneAmount - 1}
             knobSize={48}
@@ -269,7 +263,7 @@ return (
             progressColorFrom="#DCF9DD"
             labelBottom={true}
             progressColorTo="#0CC814"
-            valueFontSize="64px"
+            valueFontSize={size.width < 420 ? " 48px" : "64px"}
             progressSize={24}
             trackColor="#D9D9D9"
             trackSize={24}
@@ -277,12 +271,12 @@ return (
             
         />
         </section>
-        <section id="savings" className="py-23 flex flex-col w-[calc(100vw_-_40px)] m-auto max-w-[768px] gap-4">
+        <section id="savings" className=" flex flex-col w-[calc(100vw_-_40px)] m-auto max-w-[768px] gap-4">
           <div className="bg-gray-100 p-8 flex flex-col  gap-8">
-            <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-start">
-            <h2 className="text-xl font-semibold">Dine besparelser</h2>
-            <div className="flex items-center gap-1 text-sm hover:underline underline-offset-2">
+            <div className="flex flex-col gap-4">
+            <div className="flex justify-between items-end">
+            <h2 className="sm:text-xl text-md font-semibold">Dine besparelser</h2>
+            <div className="flex items-center gap-1 text-sm text-nowrap hover:underline underline-offset-2">
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#06620A"><path d="M480-336 288-528l51-51 105 105v-342h72v342l105-105 51 51-192 192ZM263.72-192Q234-192 213-213.15T192-264v-72h72v72h432v-72h72v72q0 29.7-21.16 50.85Q725.68-192 695.96-192H263.72Z"/></svg>
             <PDFDownloadLink 
               document= {
@@ -378,7 +372,7 @@ return (
                     value={"yearly"}
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
-                    className="peer-checked/savingsYearly:bg-green-800 px-2 peer-checked/savingsYearly:text-white flex  w-fit items-center justify-center bg-green-100 hover:cursor-pointer"
+                    className="peer-checked/savingsYearly:bg-green-800 px-2 py-1 font-semibold peer-checked/savingsYearly:text-white flex  w-fit items-center justify-center bg-green-100 hover:cursor-pointer"
                     htmlFor="savingsYearly">
                     Per år
                   </label>
@@ -390,29 +384,29 @@ return (
                     value={"lifetime"}
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
-                    className="peer-checked/savingsLifetime:bg-green-500 px-2 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
+                    className="peer-checked/savingsLifetime:bg-green-500 px-2 py-1 font-semibold px-2 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
                     htmlFor="savingsLifetime">
                     Levetid
                   </label>
             </div>
           </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex justify-between">
-                <p>NOK</p>
-                <p className="text-xl w-[200px] text-right font-semibold"> kr  
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center  justify-between">
+                <p className="w-full">NOK</p>
+                <p className="text-2xl  w-full text-left text-nowrap font-semibold"> kr  
                   {savings === 'yearly' ? ` ${savingsPerYearTotal}` : null}
                   {savings === 'lifetime' ?` ${savingsLifeTimeTotal}` : null}
 
                   </p>
               </div>
-              <div className="flex justify-between">
-                <p>Kg CO2e</p>
-                <p className="text-xl w-[200px] text-right font-semibold"> kg
+              <div className="flex items-center justify-between">
+                <p className="text-nowrap w-full">Kg CO2e</p>
+                <p className="text-2xl w-full text-left text-nowrap font-semibold"> kg
                   {savings === 'yearly' ? ` ${co2SavingsPerYearTotal}` : null}
                   {savings === 'lifetime' ?` ${co2SavingsLifeTimeTotal}` : null}
                   </p>
               </div>
-              <div  className="flex items-center gap-4">
+              <div  className="flex items-center gap-8 mt-4">
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#06620A">
                     <path d="M283.33-80v-88.67L406-254v-162.67L80-285.33v-108L406-622v-184q0-30.33 21.83-52.17Q449.67-880 480-880q30.33 0 52.17 21.83Q554-836.33 554-806v184l326 228.67v108L554-416.67V-254l122 85.33V-80l-196-59.33L283.33-80Z"/>
@@ -434,39 +428,39 @@ return (
             <table>
               <tbody>
                 <tr>
-                  <th className="text-start">Penger (NOK)</th>
-                  <th  className="text-end" >Pr enhet</th>
-                  <th className="text-end">Totalt:</th>
+                  <th className="pt-2 text-start w-3/5">Penger (NOK)</th>
+                  <th  className="pt-2 text-end text-nowrap" >Pr enhet</th>
+                  <th className="pt-2 text-end text-nowrap">Totalt:</th>
                             </tr>
                             <tr>
-                <td className="text-start">Dagens kostnader per år</td>
-                  <td  className="text-end" >kr {phonePrice}</td>
-                  <td  className="text-end" >kr {costEachYearTotal}</td>
+                <td className="pt-2 text-sm sm:text-base text-start">Dagens kostnader per år</td>
+                  <td  className="pt-2 text-sm sm:text-base text-end text-nowrap" >kr {phonePrice}</td>
+                  <td  className="pt-2 text-sm pl-2 sm:text-base text-end text-nowrap" >kr {costEachYearTotal}</td>
                             </tr>
                             <tr>
-                <td className="text-start">Dagens kostnad per mnd</td>
-                  <td  className="text-end" >kr {costCurrentLifespanUnit}</td>
-                  <td  className="text-end" >kr {costCurrentLifespanTotal}</td>
+                <td className="pt-2 text-sm sm:text-base text-start">Dagens kostnad per mnd</td>
+                  <td  className="pt-2 text-sm sm:text-base text-end" >kr {costCurrentLifespanUnit}</td>
+                  <td  className="pt-2 text-sm pl-2 sm:text-base text-end" >kr {costCurrentLifespanTotal}</td>
                             </tr>
                             <tr>
-                <td className="text-start">Justert kostnad per mnd</td>
-                  <td  className="text-end" >kr {adjustedCostPerUnit}</td>
-                  <td  className="text-end" >kr {adjustedCostTotal}</td>
+                <td className="pt-2 text-sm sm:text-base text-start">Justert kostnad per mnd</td>
+                  <td  className="pt-2 text-sm sm:text-base text-end" >kr {adjustedCostPerUnit}</td>
+                  <td  className="pt-2 text-sm pl-2 sm:text-base text-end" >kr {adjustedCostTotal}</td>
                             </tr>
                             <tr>
-                <td className="text-start">Besparelse per mnd:</td>
-                  <td  className="text-end" >kr {savingsPerMonthPerUnit}</td>
-                  <td  className="text-end" >kr {savingsPerMonthTotal}</td>
+                <td className="pt-2 text-sm sm:text-base text-start">Besparelse per mnd:</td>
+                  <td  className="pt-2 text-sm sm:text-base text-end" >kr {savingsPerMonthPerUnit}</td>
+                  <td  className="pt-2 text-sm pl-2 sm:text-base text-end" >kr {savingsPerMonthTotal}</td>
                             </tr>
                             <tr>
-                <td className="text-start">Besparelse per år:</td>
-                  <td  className="text-end" >kr {savingsPerYearPerUnit}</td>
-                  <td  className="text-end" >kr {savingsPerYearTotal}</td>
+                <td className="pt-2 text-sm sm:text-base text-start">Besparelse per år:</td>
+                  <td  className="pt-2 text-sm sm:text-base text-end" >kr {savingsPerYearPerUnit}</td>
+                  <td  className="pt-2 text-sm pl-2 sm:text-base text-end" >kr {savingsPerYearTotal}</td>
                             </tr>
                             <tr>
-                <td className="text-start">Besparelse levetid {Number(age) + Number(extraAge)} år:</td>
-                  <td  className="text-end" >kr {savingsLifeTime}</td>
-                  <td  className="text-end" >kr {savingsLifeTimeTotal}</td>
+                <td className="pt-2 text-sm sm:text-base text-start">Besparelse levetid {Number(age) + Number(extraAge)} år:</td>
+                  <td  className="pt-2 text-sm sm:text-base text-end" >kr {savingsLifeTime}</td>
+                  <td  className="pt-2 text-sm pl-2 sm:text-base text-end" >kr {savingsLifeTimeTotal}</td>
                             </tr>
               </tbody>
 
