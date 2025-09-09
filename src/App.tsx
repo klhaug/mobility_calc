@@ -419,7 +419,7 @@ return (
               </div>
             </div>
           </div>
-          <div onClick={handleCalcClick} className="flex active:bg-gray-100 flex-col justify-between items-start border-gray-500 hover:cursor-pointer px-6 py-8 border">
+          <div tabIndex={0} onKeyDown={(e) => e.key === "Enter" ? handleCalcClick() : null} onClick={handleCalcClick} className="flex active:bg-gray-100 flex-col justify-between items-start border-gray-500 hover:cursor-pointer px-6 py-8 border">
             <div className="flex justify-between items-center w-full">
               <p>Se detaljert utregning</p>
                         <svg className={`${calcIsOpen ? "rotate-90" : null } transition-all`} xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#06620A"><path d="m288-96-68-68 316-316-316-316 68-68 384 384L288-96Z"/></svg>
@@ -520,6 +520,8 @@ return (
                   value={18}
                   onChange={(e) => setAge(e.target.value)} />
                 <label
+                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                tabIndex={0}
                 className="peer-checked/18:bg-green-800 h-[56px] peer-checked/18:text-white flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer"
                 htmlFor="18">
                   18 mnd
@@ -535,6 +537,8 @@ return (
                   />
                    <label
                     htmlFor="24"
+                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  tabIndex={0}
                     className="peer-checked/24:bg-green-800 peer-checked/24:text-white h-[56px] flex w-full items-center justify-center bg-green-100 hover:cursor-pointer " >
                   24 mnd
                 </label>
@@ -547,6 +551,8 @@ return (
                   onChange={(e) => setAge(e.target.value)}
                   />
                    <label
+                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  tabIndex={0}
                     htmlFor="30"
                     className="peer-checked/30:bg-green-800 peer-checked/30:text-white h-[56px] flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer" >
                   32 mnd
@@ -562,6 +568,8 @@ return (
                   value={0}
                   onChange={(e) => setExtraAge(e.target.value)} />
                 <label
+                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  tabIndex={0}
                 className="peer-checked/phoneAgeIncreaseNone:bg-green-800 h-[56px] peer-checked/phoneAgeIncreaseNone:text-white flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer"
                 htmlFor="phoneAgeIncreaseNone">
                   Ingen
@@ -577,6 +585,8 @@ return (
                   />
                    <label
                     htmlFor="phoneAgeIncrease6mth"
+                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  tabIndex={0}
                     className="peer-checked/phoneAgeIncrease6mth:bg-green-800 peer-checked/phoneAgeIncrease6mth:text-white h-[56px] flex w-full items-center justify-center bg-green-100 hover:cursor-pointer " >
                   + 6 mnd
                 </label>
@@ -589,6 +599,8 @@ return (
                   onChange={(e) => setExtraAge(e.target.value)}
                   />
                    <label
+                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  tabIndex={0}
                     htmlFor="phoneAgeIncrease12mth"
                     className="peer-checked/phoneAgeIncrease12mth:bg-green-800 peer-checked/phoneAgeIncrease12mth:text-white h-[56px] flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer" >
                   + 12 mnd
@@ -605,6 +617,8 @@ return (
                   onChange={(e) => setRefurbishedPhones(e.target.value)} />
                 <label
                 className="peer-checked/amountPhoneIncreaseNone:bg-green-800 h-[56px] peer-checked/amountPhoneIncreaseNone:text-white flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer"
+                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  tabIndex={0}
                 htmlFor="amountPhoneIncreaseNone">
                   Ingen
                 </label>
@@ -618,6 +632,8 @@ return (
                   onChange={(e) => setRefurbishedPhones(e.target.value)}
                   />
                    <label
+                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  tabIndex={0}
                       htmlFor="amountPhoneIncrease10"
                     className="peer-checked/amountPhoneIncrease10:bg-green-800 peer-checked/amountPhoneIncrease10:text-white h-[56px] flex w-full items-center justify-center bg-green-100 hover:cursor-pointer " >
                   10%
@@ -631,13 +647,15 @@ return (
                   onChange={(e) => setRefurbishedPhones(e.target.value)}
                   />
                    <label
+                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  tabIndex={0}
                     htmlFor="amountPhoneIncrease25"
                     className="peer-checked/amountPhoneIncrease25:bg-green-800 peer-checked/amountPhoneIncrease25:text-white h-[56px] flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer" >
                   25%
                   </label>
           </fieldset>
           <div  className="flex flex-col  justify-between items-start border-gray-500 border">
-            <div onClick={handleAdjClick} className="flex px-8 py-10 active:bg-gray-100 hover:cursor-pointer justify-between items-center w-full">
+            <div tabIndex={0} onKeyDown={(e) => e.key === "Enter" ? handleAdjClick() : null} onClick={handleAdjClick} className="flex px-8 py-10 active:bg-gray-100 hover:cursor-pointer justify-between items-center w-full">
               <p>Detaljerte instillinger</p>
                         <svg className={`${adjIsOpen ? "rotate-90" : null } transition-all`} xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#06620A"><path d="m288-96-68-68 316-316-316-316 68-68 384 384L288-96Z"/></svg>
             </div>
