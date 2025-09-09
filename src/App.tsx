@@ -373,6 +373,8 @@ return (
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
                     className="peer-checked/savingsYearly:bg-green-800 px-2 py-1 font-semibold peer-checked/savingsYearly:text-white flex  w-fit items-center justify-center bg-green-100 hover:cursor-pointer"
+                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  tabIndex={0}
                     htmlFor="savingsYearly">
                     Per år
                   </label>
@@ -384,6 +386,8 @@ return (
                     value={"lifetime"}
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
+                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  tabIndex={0}
                     className="peer-checked/savingsLifetime:bg-green-500 px-2 py-1 font-semibold px-2 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
                     htmlFor="savingsLifetime">
                     Levetid
@@ -419,7 +423,7 @@ return (
               </div>
             </div>
           </div>
-          <div tabIndex={0} onKeyDown={(e) => e.key === "Enter" ? handleCalcClick() : null} onClick={handleCalcClick} className="flex active:bg-gray-100 flex-col justify-between items-start border-gray-500 hover:cursor-pointer px-6 py-8 border">
+          <div tabIndex={0} onKeyDown={(e) => e.key === "Enter" ? handleCalcClick() : null} onClick={handleCalcClick} className="flex active:bg-gray-100 flex-col justify-between items-start border-gray-500 hover:cursor-pointer px-6 py-8 border mt-2">
             <div className="flex justify-between items-center w-full">
               <p>Se detaljert utregning</p>
                         <svg className={`${calcIsOpen ? "rotate-90" : null } transition-all`} xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#06620A"><path d="m288-96-68-68 316-316-316-316 68-68 384 384L288-96Z"/></svg>
@@ -429,8 +433,8 @@ return (
               <tbody>
                 <tr>
                   <th className="pt-2 text-start w-3/5">Penger (NOK)</th>
-                  <th  className="pt-2 text-end text-nowrap" >Pr enhet</th>
-                  <th className="pt-2 text-end text-nowrap">Totalt:</th>
+                  <th  className="pt-2 text-end w-1/5 text-nowrap" >Pr enhet</th>
+                  <th className="pt-2 text-end w-1/5 text-nowrap">Totalt:</th>
                             </tr>
                             <tr>
                 <td className="pt-2 text-sm sm:text-base text-start">Dagens kostnader per år</td>
@@ -468,39 +472,39 @@ return (
             <table>
               <tbody>
                 <tr>
-                  <th className="text-start">Utslipp (CO2e)</th>
-                  <th  className="text-end" >Pr enhet</th>
-                  <th className="text-end">Totalt:</th>
+                  <th className="text-start w-3/5 pt-2">Utslipp (CO2e)</th>
+                  <th  className="text-end w-1/5 text-nowrap pt-2" >Pr enhet</th>
+                  <th className="text-end w-1/5 text-nowrap pt-2">Totalt:</th>
                             </tr>
                             <tr>
-                <td className="text-start">Dagens utslipp per år</td>
-                  <td  className="text-end" >kg {co2EachYearPerUnit}</td>
-                  <td  className="text-end" >kg {co2Total}</td>
+                  <td  className=" pt-2 text-sm sm:text-base text-start">Dagens utslipp per år</td>
+                  <td  className="text-nowrap pt-2 text-sm sm:text-base text-end" >kg {co2EachYearPerUnit}</td>
+                  <td  className="text-nowrap pt-2 pl-2 text-sm sm:text-base text-end" >kg {co2Total}</td>
                             </tr>
                             <tr>
-                <td className="text-start">Dagens utslipp per mnd</td>
-                  <td  className="text-end" >kg {co2CurrentLifespanUnit}</td>
-                  <td  className="text-end" >kg {co2CurrentLifespanTotal}</td>
+                  <td  className=" pt-2 text-sm sm:text-base text-start">Dagens utslipp per mnd</td>
+                  <td  className="text-nowrap pt-2 text-sm sm:text-base text-end" >kg {co2CurrentLifespanUnit}</td>
+                  <td  className="text-nowrap pt-2 pl-2 text-sm sm:text-base text-end" >kg {co2CurrentLifespanTotal}</td>
                             </tr>
                             <tr>
-                <td className="text-start">Justert utslipp per mnd</td>
-                  <td  className="text-end" >kg {adjustedEmissionsPerUnit}</td>
-                  <td  className="text-end" >kg {adjustedEmissionsTotal}</td>
+                  <td  className=" pt-2 text-sm sm:text-base text-start">Justert utslipp per mnd</td>
+                  <td  className="text-nowrap pt-2 text-sm sm:text-base text-end" >kg {adjustedEmissionsPerUnit}</td>
+                  <td  className="text-nowrap pt-2 pl-2 text-sm sm:text-base text-end" >kg {adjustedEmissionsTotal}</td>
                             </tr>
                             <tr>
-                <td className="text-start">Besparelse per mnd:</td>
-                  <td  className="text-end" >kg {co2SavingsPerMonthPerUnit}</td>
-                  <td  className="text-end" >kg {co2SavingsPerMonthTotal}</td>
+                  <td  className=" pt-2 text-sm sm:text-base text-start">Besparelse per mnd:</td>
+                  <td  className="text-nowrap pt-2 text-sm sm:text-base text-end" >kg {co2SavingsPerMonthPerUnit}</td>
+                  <td  className="text-nowrap pt-2  pl-2 text-sm sm:text-base text-end" >kg {co2SavingsPerMonthTotal}</td>
                             </tr>
                             <tr>
-                <td className="text-start">Besparelse per år:</td>
-                  <td  className="text-end" >kg {co2SavingsPerYearPerUnit}</td>
-                  <td  className="text-end" >kg {co2SavingsPerYearTotal}</td>
+                  <td  className=" pt-2 text-sm sm:text-base text-start">Besparelse per år:</td>
+                  <td  className="text-nowrap pt-2 text-sm sm:text-base text-end" >kg {co2SavingsPerYearPerUnit}</td>
+                  <td  className="text-nowrap pt-2  pl-2 text-sm sm:text-base text-end" >kg {co2SavingsPerYearTotal}</td>
                             </tr>
                             <tr>
-                <td className="text-start">Besparelse levetid {Number(age) + Number(extraAge)} år:</td>
-                  <td  className="text-end" >kg {co2SavingsLifeTime}</td>
-                  <td  className="text-end" >kg {co2SavingsLifeTimeTotal}</td>
+                  <td  className=" pt-2 text-sm sm:text-base text-start">Besparelse levetid {Number(age) + Number(extraAge)} år:</td>
+                  <td  className="text-nowrap pt-2 text-sm sm:text-base text-end" >kg {co2SavingsLifeTime}</td>
+                  <td  className="text-nowrap pt-2 text-sm pl-2 sm:text-base text-end" >kg {co2SavingsLifeTimeTotal}</td>
                             </tr>
               </tbody>
 
@@ -508,9 +512,9 @@ return (
             </div>
           </div>
         </section>
-        <section id="adjustments" className="flex flex-col gap-4">
+        <section id="adjustments" className=" flex flex-col w-[calc(100vw_-_40px)] m-auto max-w-[768px] gap-4 py-16">
           <h2 className="font-semibold text-2xl">Justér sparetiltak</h2>
-          <fieldset className="flex flex-col gap-4 mt-12">
+          <fieldset className="flex flex-col mt-4 gap-4">
           <legend className=" mb-4 ">Gjennomsnittlig levetid per telefon:</legend>
                 <input
                   className="hidden peer/18"
@@ -558,7 +562,7 @@ return (
                   32 mnd
                   </label>
           </fieldset>
-          <fieldset className="flex gap-4 mt-12">
+          <fieldset className="flex gap-4 mt-4">
           <legend className="mb-4">Forleng levetid på telefonene</legend>
                 <input
                   className="hidden peer/phoneAgeIncreaseNone"
@@ -606,7 +610,7 @@ return (
                   + 12 mnd
                   </label>
           </fieldset>
-          <fieldset className="flex gap-4 mt-12">
+          <fieldset className="flex gap-4 mt-4">
           <legend className="mb-4 ">Øk andel gjenbrukte telefoner</legend>
                 <input
                   className="hidden peer/amountPhoneIncreaseNone"
@@ -654,8 +658,8 @@ return (
                   25%
                   </label>
           </fieldset>
-          <div  className="flex flex-col  justify-between items-start border-gray-500 border">
-            <div tabIndex={0} onKeyDown={(e) => e.key === "Enter" ? handleAdjClick() : null} onClick={handleAdjClick} className="flex px-8 py-10 active:bg-gray-100 hover:cursor-pointer justify-between items-center w-full">
+          <div  className="flex flex-col  justify-between items-start border-gray-500 border mt-2">
+            <div tabIndex={0} onKeyDown={(e) => e.key === "Enter" ? handleAdjClick() : null} onClick={handleAdjClick} className="flex px-6 py-8 active:bg-gray-100 hover:cursor-pointer justify-between items-center w-full ">
               <p>Detaljerte instillinger</p>
                         <svg className={`${adjIsOpen ? "rotate-90" : null } transition-all`} xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#06620A"><path d="m288-96-68-68 316-316-316-316 68-68 384 384L288-96Z"/></svg>
             </div>
@@ -718,8 +722,8 @@ return (
                 </div>
           </div>
           {/* Average Emissions Per Refurbished Phone */}
-          <div className="flex flex-col px-8 gap-2 h-full justify-start items-start  w-full">
-            <p className=" text-gray-500 text-xs">Gjennomsnittlig CO2e avtrykk perr refurbished mobiltelefon:</p>
+          <div className="flex flex-col px-8 gap-2 h-full justify-start items-start  mb-8 w-full">
+            <p className=" text-gray-500 text-xs">Gjennomsnittlig CO2e avtrykk per refurbished mobiltelefon:</p>
             <p className="text-base font-semibold">{avgEmissionsRefurbished} kg</p>
               <RangeSlider
                       className="single-thumb"
