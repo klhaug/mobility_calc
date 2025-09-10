@@ -1,5 +1,5 @@
 import './App.css'
-import { useState, useEffect } from 'react';
+import { useState,  } from 'react';
 import CircularSlider from '@fseehawer/react-circular-slider';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
@@ -8,7 +8,7 @@ import { useWindowSize } from "@uidotdev/usehooks";
 
 
 function App() {
-  const [phoneAmount, setPhoneAmount] = useState(150);
+  const [phoneAmount, setPhoneAmount] = useState<number>(150);
   const [age, setAge] = useState(24);
   const [extraAge, setExtraAge] = useState(6)
   const [savings, setSavings] = useState("yearly");
@@ -19,7 +19,20 @@ function App() {
   const [phonePriceRefurbished, setPhonePriceRefurbished] = useState(4370)
   const [avgEmissions, setAvgEmissions] = useState(64)
   const [avgEmissionsRefurbished, setAvgEmissionsRefurbished] = useState(20)
+
   const size = useWindowSize();
+  const windowWidth: number | null = size.width;
+  const setCircularSliderWidth = (number: number | null) => {
+    if(number === null) {
+      return 0;
+    } else if (number > 768 ) {
+    return 400;
+    } else if (number > 420) {
+      return number - 120
+    } else {
+      return number - 64
+    }
+  }
 
   const handleCalcClick = () => {
     setCalcIsOpen(!calcIsOpen)
@@ -34,12 +47,9 @@ function App() {
   }
 
 
-console.log(size)
-console.log(size.width)
-
 
 //Takes a number, transforms it into a string and splits it into even numerical formatting based on the length of the string. Caps out at length 8. Length 9 logs an error and returns the number as a string unformatted. 
-  const transformNumberIntoString = (number) => {
+  const transformNumberIntoString = (number: number): string | undefined => {
     if(typeof number !== "number"){
       alert("Please enter a valid number")
       return;
@@ -84,7 +94,7 @@ console.log(size.width)
     }
   }
   //and then I found out about this method...
-  const transformNumberIntoString20 = (number) => {
+  const transformNumberIntoString20 = (number: number): string => {
     return number.toLocaleString("nn-NO", {
       minimumFractionDigits: 1,
       maximumFractionDigits: 1, 
@@ -232,6 +242,7 @@ console.log(size.width)
       flightComparison,
       flightComparisonAnnual
     } = emissions;
+    
 
 
  
@@ -254,7 +265,7 @@ return (
             labelColor="#000000"
             labelFontSize="12px"
             knobColor="#06620A"
-            width={size.width < 768 ? (size.width > 420 ? size.width - 120 : size.width - 64) : 400}
+            width={setCircularSliderWidth(windowWidth)}
             initialValue={150}
             dataIndex={phoneAmount - 1}
             knobSize={48}
@@ -263,7 +274,7 @@ return (
             progressColorFrom="#DCF9DD"
             labelBottom={true}
             progressColorTo="#0CC814"
-            valueFontSize={size.width < 420 ? " 48px" : "64px"}
+            valueFontSize={size.width !== null && size.width < 420 ? " 48px" : "64px"}
             progressSize={24}
             trackColor="#D9D9D9"
             trackSize={24}
@@ -310,7 +321,6 @@ return (
                 co2SavingsLifeTime={co2SavingsLifeTime}
                 co2SavingsLifeTimeTotal={co2SavingsLifeTimeTotal}
                 flightComparison={flightComparison}
-                flightComparisonAnnual={flightComparisonAnnual}
                 refurbishedPhones = {refurbishedPhones}
                 avgEmissions = {avgEmissions}
                 avgEmissionsRefurbished={avgEmissionsRefurbished}
@@ -318,7 +328,7 @@ return (
                   />
                 } 
                 fileName={`${createCurrentDate()} - Mobility Klimakalkulator`}>
-              {({ blob, url, loading, error }) =>
+              {({ loading }) =>
               loading ? 'Last ned PDF' : "Last ned PDF"
             }
             </PDFDownloadLink>
@@ -372,10 +382,10 @@ return (
                     value={"yearly"}
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
-                    className="peer-checked/savingsYearly:bg-green-800 px-2 py-1 font-semibold peer-checked/savingsYearly:text-white flex  w-fit items-center justify-center bg-green-100 hover:cursor-pointer"
-                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
-                  tabIndex={0}
-                    htmlFor="savingsYearly">
+                      className="peer-checked/savingsYearly:bg-green-800 px-2 py-1 font-semibold peer-checked/savingsYearly:text-white flex  w-fit items-center justify-center bg-green-100 hover:cursor-pointer"
+                      onKeyDown={(e) => e.key === "Enter" ? e.currentTarget.click() : null}
+                      tabIndex={0}
+                      htmlFor="savingsYearly">
                     Per år
                   </label>
               <input
@@ -386,9 +396,9 @@ return (
                     value={"lifetime"}
                     onChange={(e) => setSavings(e.target.value)}  />
                      <label
-                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  onKeyDown={(e) => e.key === "Enter" ? e.currentTarget.click() : null}
                   tabIndex={0}
-                    className="peer-checked/savingsLifetime:bg-green-500 px-2 py-1 font-semibold px-2 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
+                    className="peer-checked/savingsLifetime:bg-green-500 py-1 font-semibold px-2 w-fit peer-checked/savingsLifetime:text-white flex  items-center justify-center bg-green-100 hover:cursor-pointer"
                     htmlFor="savingsLifetime">
                     Levetid
                   </label>
@@ -522,9 +532,9 @@ return (
                   id='18'
                   name="age"
                   value={18}
-                  onChange={(e) => setAge(e.target.value)} />
+                  onChange={(e) => setAge(parseFloat(e.target.value))} />
                 <label
-                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  onKeyDown={(e) => e.key === "Enter" ? e.currentTarget.click() : null}
                 tabIndex={0}
                 className="peer-checked/18:bg-green-800 h-[56px] peer-checked/18:text-white flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer"
                 htmlFor="18">
@@ -537,11 +547,11 @@ return (
                   name="age"
                   defaultChecked={true}
                   value={24}
-                  onChange={(e) => setAge(e.target.value)}
+                  onChange={(e) => setAge(parseFloat(e.target.value))}
                   />
                    <label
                     htmlFor="24"
-                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  onKeyDown={(e) => e.key === "Enter" ? e.currentTarget.click() : null}
                   tabIndex={0}
                     className="peer-checked/24:bg-green-800 peer-checked/24:text-white h-[56px] flex w-full items-center justify-center bg-green-100 hover:cursor-pointer " >
                   24 mnd
@@ -552,10 +562,10 @@ return (
                   id='30'
                   name="age"
                   value={30}
-                  onChange={(e) => setAge(e.target.value)}
+                  onChange={(e) => setAge(parseFloat(e.target.value))}
                   />
                    <label
-                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  onKeyDown={(e) => e.key === "Enter" ? e.currentTarget.click() : null}
                   tabIndex={0}
                     htmlFor="30"
                     className="peer-checked/30:bg-green-800 peer-checked/30:text-white h-[56px] flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer" >
@@ -570,9 +580,9 @@ return (
                   id='phoneAgeIncreaseNone'
                   name="phoneAgeIncrease"
                   value={0}
-                  onChange={(e) => setExtraAge(e.target.value)} />
+                  onChange={(e) => setExtraAge(parseFloat(e.target.value))} />
                 <label
-                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  onKeyDown={(e) => e.key === "Enter" ? e.currentTarget.click() : null}
                   tabIndex={0}
                 className="peer-checked/phoneAgeIncreaseNone:bg-green-800 h-[56px] peer-checked/phoneAgeIncreaseNone:text-white flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer"
                 htmlFor="phoneAgeIncreaseNone">
@@ -585,11 +595,11 @@ return (
                   name="phoneAgeIncrease"
                   defaultChecked={true}
                   value={6}
-                  onChange={(e) => setExtraAge(e.target.value)}
+                  onChange={(e) => setExtraAge(parseFloat(e.target.value))}
                   />
                    <label
                     htmlFor="phoneAgeIncrease6mth"
-                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  onKeyDown={(e) => e.key === "Enter" ? e.currentTarget.click() : null}
                   tabIndex={0}
                     className="peer-checked/phoneAgeIncrease6mth:bg-green-800 peer-checked/phoneAgeIncrease6mth:text-white h-[56px] flex w-full items-center justify-center bg-green-100 hover:cursor-pointer " >
                   + 6 mnd
@@ -600,10 +610,10 @@ return (
                   id='phoneAgeIncrease12mth'
                   name="phoneAgeIncrease"
                   value={12}
-                  onChange={(e) => setExtraAge(e.target.value)}
+                  onChange={(e) => setExtraAge(parseFloat(e.target.value))}
                   />
                    <label
-                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  onKeyDown={(e) => e.key === "Enter" ? e.currentTarget.click() : null}
                   tabIndex={0}
                     htmlFor="phoneAgeIncrease12mth"
                     className="peer-checked/phoneAgeIncrease12mth:bg-green-800 peer-checked/phoneAgeIncrease12mth:text-white h-[56px] flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer" >
@@ -618,10 +628,10 @@ return (
                   id='amountPhoneIncreaseNone'
                   name="phoneIncrease"
                   value={0}
-                  onChange={(e) => setRefurbishedPhones(e.target.value)} />
+                  onChange={(e) => setRefurbishedPhones(parseFloat(e.target.value))} />
                 <label
                 className="peer-checked/amountPhoneIncreaseNone:bg-green-800 h-[56px] peer-checked/amountPhoneIncreaseNone:text-white flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer"
-                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  onKeyDown={(e) => e.key === "Enter" ? e.currentTarget.click() : null}
                   tabIndex={0}
                 htmlFor="amountPhoneIncreaseNone">
                   Ingen
@@ -633,10 +643,10 @@ return (
                   name="phoneIncrease"
                   defaultChecked={true}
                   value={0.1}
-                  onChange={(e) => setRefurbishedPhones(e.target.value)}
+                  onChange={(e) => setRefurbishedPhones(parseFloat(e.target.value))}
                   />
                    <label
-                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  onKeyDown={(e) => e.key === "Enter" ? e.currentTarget.click() : null}
                   tabIndex={0}
                       htmlFor="amountPhoneIncrease10"
                     className="peer-checked/amountPhoneIncrease10:bg-green-800 peer-checked/amountPhoneIncrease10:text-white h-[56px] flex w-full items-center justify-center bg-green-100 hover:cursor-pointer " >
@@ -648,10 +658,10 @@ return (
                   id='amountPhoneIncrease25'
                   name="phoneIncrease"
                   value={0.25}
-                  onChange={(e) => setRefurbishedPhones(e.target.value)}
+                  onChange={(e) => setRefurbishedPhones(parseFloat(e.target.value))}
                   />
                    <label
-                  onKeyDown={(e) => e.key === "Enter" ? e.target.click() : null}
+                  onKeyDown={(e) => e.key === "Enter" ? e.currentTarget.click() : null}
                   tabIndex={0}
                     htmlFor="amountPhoneIncrease25"
                     className="peer-checked/amountPhoneIncrease25:bg-green-800 peer-checked/amountPhoneIncrease25:text-white h-[56px] flex  w-full items-center justify-center bg-green-100 hover:cursor-pointer" >
@@ -857,10 +867,41 @@ const MyDocument = ({
     phonePriceRefurbished,
     co2SavingsLifeTimeTotal,
     flightComparison,
-    flightComparisonAnnual,
-                createNewDate 
-
-  }) => {
+    createNewDate 
+    
+  }: {
+    age: number, 
+    extraAge: number, 
+    phonePrice: number, 
+    costEachYearTotal: string | undefined, 
+    costCurrentLifespanUnit: string | undefined, 
+    costCurrentLifespanTotal: string | undefined, 
+    adjustedCostPerUnit: string | undefined , 
+    adjustedCostTotal:string | undefined, 
+    savingsPerMonthPerUnit:string | undefined, 
+    savingsPerMonthTotal:string | undefined, 
+    savingsPerYearPerUnit: string | undefined, 
+    savingsPerYearTotal: string | undefined, 
+    savingsLifeTime:string | undefined, 
+    savingsLifeTimeTotal: string | undefined, 
+    co2EachYearPerUnit: string | undefined, 
+    co2Total:string | undefined, 
+    co2CurrentLifespanUnit: string | undefined, 
+    co2CurrentLifespanTotal: string | undefined, 
+    adjustedEmissionsPerUnit: string | undefined, 
+    avgEmissions: number, 
+    avgEmissionsRefurbished: number, 
+    refurbishedPhones:number, 
+    adjustedEmissionsTotal:string | undefined, 
+    co2SavingsPerMonthPerUnit: string | undefined, 
+    phoneAmount: number,
+    co2SavingsPerMonthTotal:string | undefined, 
+    co2SavingsPerYearPerUnit: string | undefined, 
+    co2SavingsPerYearTotal:string | undefined, 
+    co2SavingsLifeTime:string | undefined, 
+    phonePriceRefurbished: number,
+    co2SavingsLifeTimeTotal:string | undefined, 
+    flightComparison: string | undefined, createNewDate: () => string }) => {
  
 
   return (
