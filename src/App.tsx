@@ -278,7 +278,7 @@ return (
             progressSize={24}
             trackColor="#D9D9D9"
             trackSize={24}
-            onChange={value => setPhoneAmount(value)}
+            onChange={value => setPhoneAmount(typeof value === "string" ? parseFloat(value) : value)}
             
         />
         </section>
@@ -877,7 +877,7 @@ const MyDocument = ({
     costCurrentLifespanUnit: string | undefined, 
     costCurrentLifespanTotal: string | undefined, 
     adjustedCostPerUnit: string | undefined , 
-    adjustedCostTotal:string | undefined, 
+    adjustedCostTotal:string | undefined,
     savingsPerMonthPerUnit:string | undefined, 
     savingsPerMonthTotal:string | undefined, 
     savingsPerYearPerUnit: string | undefined, 
