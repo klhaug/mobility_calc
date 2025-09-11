@@ -757,7 +757,7 @@ return (
 
 Ta kontakt om du ønsker en detaljert oversikt over ditt firmas utslipp og besparelses muligheter, da vi har en avansert kalkulator med oversikt over utslipp og muligheter på alle telefoner.</p>          
         </section>
-  <section className=" bg-[#f4f4f4] py-10 px-12 flex flex-col w-[calc(100vw_-_40px)] m-auto max-w-[768px] gap-8">
+  <section className=" bg-[#f4f4f4] py-8 px-6 flex flex-col w-[calc(100vw_-_40px)] m-auto max-w-[768px] gap-8">
     <h2 className="text-green-500 text-xl font-semibold">Klar for å spare?</h2>
     <p>Besparelsene oppnås ved hjelp av konkrete tiltak som er <b>enkle</b> å gjennomføre. Ta kontakt så viser vi deg hvordan!</p>
     <a href="tel:22278800" className="flex items-center border py-8 px-6 bg-green-500 text-white gap-4 hover:bg-green-700">
