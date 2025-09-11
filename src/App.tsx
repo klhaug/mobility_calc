@@ -421,7 +421,7 @@ return (
                   {savings === 'lifetime' ?` ${co2SavingsLifeTimeTotal}` : null}
                   </p>
               </div>
-              <div  className="flex items-center gap-8 mt-4">
+              <div  className="flex items-center gap-4 mt-4">
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#06620A">
                     <path d="M283.33-80v-88.67L406-254v-162.67L80-285.33v-108L406-622v-184q0-30.33 21.83-52.17Q449.67-880 480-880q30.33 0 52.17 21.83Q554-836.33 554-806v184l326 228.67v108L554-416.67V-254l122 85.33V-80l-196-59.33L283.33-80Z"/>
@@ -757,7 +757,7 @@ return (
 
 Ta kontakt om du ønsker en detaljert oversikt over ditt firmas utslipp og besparelses muligheter, da vi har en avansert kalkulator med oversikt over utslipp og muligheter på alle telefoner.</p>          
         </section>
-  <section className=" flex flex-col w-[calc(100vw_-_40px)] m-auto max-w-[768px] gap-6">
+  <section className=" bg-[#f4f4f4] py-10 px-12 flex flex-col w-[calc(100vw_-_40px)] m-auto max-w-[768px] gap-8">
     <h2 className="text-green-500 text-xl font-semibold">Klar for å spare?</h2>
     <p>Besparelsene oppnås ved hjelp av konkrete tiltak som er <b>enkle</b> å gjennomføre. Ta kontakt så viser vi deg hvordan!</p>
     <a href="tel:22278800" className="flex items-center border py-8 px-6 bg-green-500 text-white gap-4 hover:bg-green-700">
