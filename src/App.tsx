@@ -250,17 +250,17 @@ function App() {
 return (
 
   <>
-      <header className="flex flex-col w-full bg-gray-100 p-6 m-auto  max-w-[768px]">  
+      <header className="flex flex-col w-full bg-gray-100 p-4 m-auto  max-w-[768px]">  
         <div className="flex items-center justify-between">
-          <h1 className="text-green-500 text-xl font-bold uppercase">Klimakalkulator</h1>
+          <h1 className="text-green-500 text-sm font-bold uppercase">Klimakalkulator</h1>
         <img src="/mobility_logo_black.svg" alt="logo"/>
         {/* Bytt ut m. img og logo */}
         </div>
-        <p className="w-2/3 text-start text-sm">Se hvor mye penger og
+        <p className="w-2/3 text-start text-xs text-gray-600">Se hvor mye penger og
           CO2-utslipp din bedrift kan spare</p>
       </header>
       <main className="pb-12 ">
-        <section id="slider" className="flex items-center flex-col justify-center py-24">
+        <section id="slider" className="flex items-center flex-col justify-center py-12">
           <CircularSlider
             label="Mobiltelefoner i din bedrift"
             labelColor="#000000"
@@ -526,7 +526,7 @@ return (
         <section id="adjustments" className=" flex flex-col w-[calc(100vw_-_40px)] m-auto max-w-[768px] gap-4 py-16">
           <h2 className="font-semibold text-2xl">Justér sparetiltak</h2>
           <fieldset className="flex flex-col mt-4 gap-4">
-          <legend className=" mb-4 ">Gjennomsnittlig levetid per telefon:</legend>
+          <legend className="text-gray-500 mb-4 ">Gjennomsnittlig levetid per telefon:</legend>
                 <input
                   className="hidden peer/18"
                   type="radio"
@@ -574,7 +574,7 @@ return (
                   </label>
           </fieldset>
           <fieldset className="flex gap-4 mt-4">
-          <legend className="mb-4">Forleng levetid på telefonene</legend>
+          <legend className="text-gray-500 mb-4">Forleng levetid på telefonene</legend>
                 <input
                   className="hidden peer/phoneAgeIncreaseNone"
                   type="radio"
@@ -622,7 +622,7 @@ return (
                   </label>
           </fieldset>
           <fieldset className="flex gap-4 mt-4">
-          <legend className="mb-4 ">Øk andel gjenbrukte telefoner</legend>
+          <legend className="text-gray-500 mb-4 ">Øk andel gjenbrukte telefoner</legend>
                 <input
                   className="hidden peer/amountPhoneIncreaseNone"
                   type="radio"
@@ -669,10 +669,10 @@ return (
                   25%
                   </label>
           </fieldset>
-          <div  className="flex flex-col  justify-between items-start border-gray-500 border mt-2">
+          <div  className="flex flex-col mt-4 justify-between items-start border-gray-500 border">
             <div tabIndex={0} onKeyDown={(e) => e.key === "Enter" ? handleAdjClick() : null} onClick={handleAdjClick} className="flex px-6 py-8 active:bg-gray-100 hover:cursor-pointer justify-between items-center w-full ">
               <p>Detaljerte instillinger</p>
-                        <svg className={`${adjIsOpen ? "rotate-90" : null } transition-all`} xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#06620A"><path d="m288-96-68-68 316-316-316-316 68-68 384 384L288-96Z"/></svg>
+                <svg className={`${adjIsOpen ? "rotate-90" : null } transition-all`} xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#06620A"><path d="m288-96-68-68 316-316-316-316 68-68 384 384L288-96Z"/></svg>
             </div>
           <div className={`${adjIsOpen ? "h-fit" : "h-0"} overflow-hidden flex flex-col gap-8 w-full`}>
           {/* Average Price Per New Phone */}
@@ -753,10 +753,26 @@ return (
           </div>
             </div>
           </div>
-          
+<p className="text-gray-500 mt-4">Eksemplene over er basert på gjennomsnittlig pris og utslipp på en Iphone. Refurbished enheter vil variere på utslipp etter hva som gjøres, gjennomsnitt er satt til 20kg CO2e.
+
+Ta kontakt om du ønsker en detaljert oversikt over ditt firmas utslipp og besparelses muligheter, da vi har en avansert kalkulator med oversikt over utslipp og muligheter på alle telefoner.</p>          
         </section>
-   
+  <section className=" flex flex-col w-[calc(100vw_-_40px)] m-auto max-w-[768px] gap-6">
+    <h2 className="text-green-500 text-xl font-semibold">Klar for å spare?</h2>
+    <p>Besparelsene oppnås ved hjelp av konkrete tiltak som er <b>enkle</b> å gjennomføre. Ta kontakt så viser vi deg hvordan!</p>
+    <a href="tel:22278800" className="flex items-center border py-8 px-6 bg-green-500 text-white gap-4 hover:bg-green-700">
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fdfdfd"><path d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12ZM241-600l66-66-17-94h-89q5 41 14 81t26 79Zm358 358q39 17 79.5 27t81.5 13v-88l-94-19-67 67ZM241-600Zm358 358Z"/></svg> 
+      Ta kontakt nå!</a>
+    </section> 
       </main>
+      <footer className=" flex flex-col w-[calc(100vw_-_40px)]  py-8 m-auto max-w-[768px] gap-6">
+      <p className="text-center text-gray-500">Kilde utslipp standard mobiltelefon er hentet fra <a href="https://framtiden.no" className="underline underline-offset-2" target="_blank">framtiden.no.</a> Alle beløp eks mva.</p>
+      <div className="flex items-center justify-center gap-4">
+        <span>2025</span>
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M400-320h160q17 0 28.5-11.5T600-360v-80h-80v40h-80v-160h80v40h80v-80q0-17-11.5-28.5T560-640H400q-17 0-28.5 11.5T360-600v240q0 17 11.5 28.5T400-320Zm80 240q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+        <img src="/mobility_logo_black.svg" alt="logo"/>
+      </div>
+      </footer  >
     </>
   )
 }
